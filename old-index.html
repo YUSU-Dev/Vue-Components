@@ -1,0 +1,235 @@
+{embed="global/.header"}
+
+{exp:su_event:index}
+
+<!-- Promo Block -->
+<div class="g-bg-img-hero g-bg-cover g-bg-black-opacity-0_3--after"
+     style="margin-top: 109px !important; background-image: url(https://3206af7111780558b7b3-c0c78907890fbb9cb201844d036b4a41.ssl.cf3.rackcdn.com/header-stock-event.png);">
+    <div class="container g-pos-rel g-z-index-1 g-pt-60 g-pb-20">
+        <div class="row justify-content-lg-between align-items-md-center">
+
+            <div class="col-md-12 col-lg-12 g-mb-30">
+                <div class="g-color-white text-center g-py-40">
+                    <h1 class="g-font-weight-700 g-font-size-40 g-font-size-70--md text-uppercase">Events</h1>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid justify-content-center g-bg-gray-light-v5">
+
+    <div class="row justify-content-center pt-4">
+        <div class="col-md-9 col-lg-7 col-xl-6 g-mb-30">
+
+            <!-- Contact Form -->
+            <form class="u-shadow-v35 g-bg-white rounded g-px-40 g-pt-50 g-pb-20">
+
+                <div class="row">
+
+                    {if activity_present}
+
+                    <!-- Activity -->
+                    <div class="col-md-9 ">
+
+                        <label class="g-font-weight-500 g-font-size-15 g-pl-30">Looking for a student group event?</label>
+
+                        <select
+                                class="js-custom-select w-100 u-select-v2 g-brd-none text-white g-color-white--hover g-bg-primary-opacity-0_8--hover g-bg-primary text-left g-rounded-30 g-pl-30 g-py-12"
+                                data-placeholder="Select an activity..." data-open-icon="fa fa-angle-down"
+                                data-close-icon="fa fa-angle-up"
+                                onchange="if (this.value) window.location.href = this.value;">
+
+                            {if f_activity == ""}
+
+                            <option
+                                    class="g-brd-secondary-light-v2 g-color-text-light-v1 g-color-white--active g-bg-primary--active"
+                                    selected disabled readonly>Select an activity...</option>
+
+                            {/if}
+
+                            {filter_activity}
+
+                            <option
+                                    class="g-brd-secondary-light-v2 g-color-text-light-v1 g-color-white--active g-bg-primary--active"
+                                    value="/events?activity={id}{if f_year AND f_month}&year={f_year}&month={f_month}{/if}{if f_type}&type={f_type}{/if}{if f_category}&category={f_category}{/if}"
+                                    {if f_activity==id}selected{/if}>{name}</option>
+
+                            {/filter_activity}
+
+                        </select>
+
+                    </div>
+                    <!-- End Activity -->
+
+                    {/if}
+
+                    <div class="col-md-3 ">
+                        <a href="/events"
+                           class="btn btn-block btn-reset g-font-size-16 g-font-weight-700 g-rounded-30 g-py-10 mr-2 g-mt-0  g-mt-30">Reset</a>
+                    </div>
+
+                </div>
+
+            </form>
+            <!-- End Contact Form -->
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- End Promo Block -->
+
+<section class="pb-5 g-bg-gray-light-v5">
+
+
+
+
+    <div class="container">
+        <div class="row">
+
+            <!-- Articles Content -->
+            <div class="col-lg-12 g-mb-50 g-mb-0--lg">
+
+                {if no_events}
+
+                <!-- Article -->
+                <article class="d-md-table text-md-left text-center g-bg-white w-100 g-mb-1">
+
+                    <!-- Date -->
+                    <div class="text-center d-md-table-cell g-valign-middle g-py-10 g-px-20">
+                        <span class="d-block g-font-weight-700 g-font-size-40 g-line-height-1 g-color-black u-icon-v1">
+                            <i class="icon-question"></i>
+                        </span>
+                        </time>
+                    </div>
+                    <!-- End Date -->
+
+                    <!-- Article Content -->
+                    <div class="d-md-table-cell g-valign-middle g-py-15 g-px-20">
+                        <h4 class="h6 text-uppercase g-font-weight-700">
+                            <a class="g-color-gray-dark-v2" href="">No Events to display</a>
+                        </h4>
+                        <em class="g-font-style-normal">There are no events to display at the moment. If you have a
+                            filter applied, it may just be that there are no events for the provided information.</em>
+                    </div>
+                    <!-- End Article Content -->
+
+                </article>
+                <!-- End Article -->
+
+                {if:else}
+
+                {rows}
+
+                {events}
+
+                <!-- Article -->
+                <article class="card my-2">
+                    <div class="row">
+
+                        <!-- Date -->
+                        <div
+                                class="col-md-1 pr-0 ml-3 py-sm-3 align-items-center d-flex justify-content-center text-center">
+                            <time datetime="{u_start_date format=" %Y-%m-%d"}">
+                            <span
+                                    class="d-block g-font-weight-700 g-font-size-40 g-line-height-1 g-color-black">{u_start_date
+                                    format="%j"}</span>
+                            {u_start_date format="%M, %Y"}
+                            </time>
+                        </div>
+                        <!-- End Date -->
+
+                        <!-- Article Image -->
+                        <a href="/events/id/{id}-{url}"
+                           class="col-md-2 align-items-center d-flex justify-content-center text-center">
+
+                            {if a_thumbnail_url == ""}
+
+                            <img class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid"
+                                 src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
+                                 alt="{name} Image">
+
+                            {if:else}
+
+                            <img class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid" src="{a_thumbnail_url}"
+                                 alt="{name} Image">
+
+                            {/if}
+
+                        </a>
+                        <!-- End Article Image -->
+
+                        <!-- Article Content -->
+                        <div class="g-py-15 g-px-20 col-md-5 text-center text-md-left">
+
+                            <h4 class="h6 text-uppercase g-font-weight-700 g-mb-0">
+                                <a class="g-color-gray-dark-v2" href="/events/id/{id}-{url}">{name}</a>
+                            </h4>
+
+                            <small><i>Start times from {time} | {age_restriction} {if venue_name != ''}|
+                                {venue_name}{/if}</i></small>
+
+                            <div class="g-mt-0">
+                                {short_desc}
+                            </div>
+
+                        </div>
+                        <!-- End Article Content -->
+
+                        <!-- Actions -->
+                        <div class="g-pa-20 col-md-3 ml-md-4 align-items-center d-flex justify-content-center text-center">
+                            <div class="row g-mt-minus-10 px-2 py-2">
+                                <a class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                   href="/events/id/{id}-{url}">Info</a>
+                                <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                   href="{if external_ticket_url != ""}
+                                {external_ticket_url}
+                                {if:else}
+                                /events/id/{id}-{url}
+                                {/if}">
+                                Get Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Actions -->
+                </article>
+                <!-- End Article -->
+
+
+                {/events}
+
+                {/rows}
+
+                {/if}
+
+            </div>
+            <!-- End Articles Content -->
+
+        </div>
+
+    </div>
+
+    <!-- Start Advert Content -->
+    <!-- <div class="container pb-0 pt-2">
+         <div class="row">
+             <div class="col-lg-12">
+                 <a
+                     href="http://endsleigh.co.uk/suma?utm_medium=webbanner&utm_source=sumapartner&utm_campaign=freshers20&utm_content=york&utm_term=eventspage" target="_blank">
+                     <img src="https://3206af7111780558b7b3-c0c78907890fbb9cb201844d036b4a41.ssl.cf3.rackcdn.com/Endsleigh-October20-728x180.jpg"
+                         class="img-fluid mx-auto d-md-none"
+                         alt="Endsleigh - Be prepared. Make sure you've got everything ready for uni, including your insurance. Get a quote"><img>
+                     <img src="https://3206af7111780558b7b3-c0c78907890fbb9cb201844d036b4a41.ssl.cf3.rackcdn.com/Endsleigh-October20-728x90.jpg"
+                         class="img-fluid mx-auto d-none d-md-block"
+                         alt="Endsleigh - Be prepared. Make sure you've got everything ready for uni, including your insurance. Get a quote"><img>
+                 </a>
+             </div>
+         </div>
+     </div> -->
+    <!-- End Advert Content -->
+
+</section>
+{/exp:su_event:index}
+{embed="global/.footer"}
