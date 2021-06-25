@@ -1,0 +1,36 @@
+{embed="global/.header"}
+
+<link rel="stylesheet" href="https://assets-cdn.sums.su/YU/CSS/custom-student-life.css">
+
+
+<div class="hero-bg jumbotron jumbotron-fluid g-mt-100" style="background-image: url('https://060ecc617616c3feb7a4-94e32d036344ef9293efd028d3addb42.ssl.cf3.rackcdn.com/clubs-socs-gradient-bg.png'); background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;">
+    <h1 class="text-center"><span>Clubs and Socs: A-Z</span></h1>
+</div>
+<div class="container-fluid container-custom g-pt-40">
+
+    <div class="row g-pb-40 g-pt-20">
+
+        <!-- Main content -->
+        <div class="col-lg-9">
+<main class="main" id="main">
+    <v-activities-a-z></v-activities-a-z>
+</main>
+        </div>
+    </div>
+</div>
+
+<!--		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script src="https://yusu.org/activities-test/activities.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#main'
+    });
+</script>
+
+{embed="global/.footer"}
