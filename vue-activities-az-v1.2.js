@@ -179,11 +179,6 @@ Vue.component('VActivitiesAZ', {
         ActivityParents() {
             return this.Activities.length > 0 ? [...new Set(this.Activities.map(a => a.Parent))] : [];
         },
-        FilteredSubCategories()
-        {
-            let self = this;
-            return self.SelectedParent ? [... new Set(self.Activities.filter(a => a.Parent === self.SelectedParent).map(a => a.Category))] : this.ActivityCategories;
-        },
         FilteredActivities() {
             let self = this;
             let Activities = self.Activities;
@@ -191,10 +186,28 @@ Vue.component('VActivitiesAZ', {
             let search_params = url.searchParams;
 
             // Filter Category:
-            if (self.SelectedCategory) {
+            if (self.SelectedCategory === "Sports" || self.SelectedCategory === "College Sport"){
+                self.SelectedParent = "Sports";
+                search_params.set('parent', "Sports");
+                search_params.set('category', self.SelectedCategory);
+
+                Activities = Activities.filter(a => a.Parent === "Sports");
+                Activities = Activities.filter(a => a.Category === self.SelectedCategory);
+
+                console.log(self.Category);
+                console.log(self.Parent);
+
+            }
+            else if (self.SelectedCategory) {
+                console.log(self.SelectedCategory);
+                self.SelectedParent = "Societies";
+
+                Activities = Activities.filter(a => a.Parent === "Societies");
+                search_params.delete('parent');
                 Activities = Activities.filter(a => a.Category === self.SelectedCategory);
                 search_params.set('category', self.SelectedCategory);
-            } else {
+            }
+            else {
                 search_params.delete('category');
             }
 
@@ -222,6 +235,11 @@ Vue.component('VActivitiesAZ', {
             self.TotalItems = Activities.length;
             let current = (self.Page - 1) * self.PageLength;
             return Activities.slice(current, current + self.PageLength);
+        },
+        FilteredSubCategories()
+        {
+            let self = this;
+            return self.SelectedParent ? [... new Set(self.Activities.filter(a => a.Parent === self.SelectedParent).map(a => a.Category))] : this.ActivityCategories;
         },
         Pages() {
             return Math.ceil(this.TotalItems / this.PageLength);
