@@ -10,7 +10,7 @@ Vue.component('VActivitiesAZ', {
                 </div>
             </div>
             <div class="col-lg-4 d-none d-lg-inline-flex">
-                <input class="nav-item w-100 float-right" type="text" aria-label="search for society/club" name="search" placeholder="Search..." v-model="Search" style="height: 40px;" />
+                <input class="nav-item w-100 float-right" type="text" aria-label="search for an activity" name="search" placeholder="Search..." v-model="Search" style="height: 40px;" />
             </div>
             <div class="col-sm-12 d-lg-none">
                 <section class="section contacts no-padding-bottom no-padding-top">
@@ -32,7 +32,7 @@ Vue.component('VActivitiesAZ', {
 
                                             <div class="col-12 g-pt-10">
                                                 <label>Search</label>
-                                                <input aria-label="search for society/club" type="text" class="form__field d-block d-sm-inline-block" placeholder="Search..." v-model="Search">
+                                                <input aria-label="search for an activity" type="text" class="form__field d-block d-sm-inline-block" placeholder="Search..." v-model="Search">
                                             </div>
                                         </div>
                                     </form>
@@ -72,15 +72,9 @@ Vue.component('VActivitiesAZ', {
                                     alt=""></div>
                                 <div v-else class="d-md-none justify-content-center" style="height: 5em;overflow:hidden ;background-image:url('https://yusu.s3.eu-west-2.amazonaws.com/sums/website/images/placeholder-events.png');
                                 background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" alt=""> </div>
-                                <!--                            <div v-if="Activity.Thumb"><img class="img-fluid" :src=Activity.Thumb alt=""-->
-                                <!--                                                            style="height: 150px; width: 150px"/></div>-->
-                                <!--                            <div v-else><img class="img-fluid"-->
-                                <!--                                             src="https://yusu.s3.eu-west-2.amazonaws.com/sums/website/images/placeholder-events.png"-->
-                                <!--                                             alt=""/></div>-->
                             </div>
                             <div class="h6 g-color-grey g-mb-5 text-center align-bottom btn-block">
                                 <p class="g-color-black">{{ Activity.Name }}</p>
-                                <!-- <p>{{ Activity.Category }}</p> -->
                             </div>
                         </a>
                     </div>
@@ -88,8 +82,6 @@ Vue.component('VActivitiesAZ', {
                 <!-- Activity end-->
 
                 <div class="col-md-12 text-center">
-                    <!--                    <a v-if="TotalItems > PageLength" @click.prevent="showMore()" id="show-more" class="btn-more">Show More <i class="fa fa-chevron-down"></i></a>-->
-                    <!--                    <a v-if="DefaultPageLength < PageLength" @click.prevent="showLess()" id="show-more" class="btn-more">Show Less <i class="fa fa-chevron-up"></i></a>-->
                     <a v-if="TotalItems > PageLength" @click.prevent="showAll()" id="show-more" class="btn-more">Show All <i class="fa fa-chevron-down"></i></a>
                     <a v-if="TotalItems == PageLength" @click.prevent="showTop()" id="show-more" class="btn-more">Show Less <i class="fa fa-chevron-up"></i></a>
                 </div>
@@ -177,7 +169,7 @@ Vue.component('VActivitiesAZ', {
             let search_params = url.searchParams;
 
             // Filter Category:
-            if (self.SelectedCategory === "Sports" || self.SelectedCategory === "College Sport") {
+            if (self.SelectedCategory === "Sports" || self.SelectedCategory === "College Sport" || self.SelectedCategory === "sports") {
                 self.SelectedParent = "Sports";
                 search_params.set('parent', "Sports");
                 search_params.set('category', self.SelectedCategory);
@@ -185,11 +177,7 @@ Vue.component('VActivitiesAZ', {
                 Activities = Activities.filter(a => a.Parent === "Sports");
                 Activities = Activities.filter(a => a.Category === self.SelectedCategory);
 
-                console.log(self.Category);
-                console.log(self.Parent);
-
             } else if (self.SelectedCategory) {
-                console.log(self.SelectedCategory);
                 self.SelectedParent = "Societies";
 
                 Activities = Activities.filter(a => a.Parent === "Societies");
