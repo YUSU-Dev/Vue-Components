@@ -1,35 +1,37 @@
 let layout = `
 <div class="g-bg-gray-light-v5 ">
-    <section class="pt-3" ref="NewsTop">
+    <section class="pt-3" ref="NewsTop" v-if="!groupid">
         <div class="contacts-wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
                         <form class="form message-form">
-                            <h6 class="form__title">Filter Events</h6>
+                            <h2 class="form__title h6">Filter Events</h2>
                             <div class="row">
                                 <div class="col-lg-3 pt-3">
-                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30">Category</label>
-                                    <select class="form-select w-100 u-select-v2 u-shadow-v19 g-brd-none g-color-black g-color-primary--hover g-bg-white text-left g-rounded-30 g-pl-30 g-py-12" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" @change="updateCategory($event)">
+                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30" for="event-category">Category</label>
+                                    <select id="event-category" class="form-select w-100 u-select-v2 u-shadow-v19 g-brd-none g-color-black g-color-primary--hover g-bg-white text-left g-rounded-30 g-pl-30 g-py-12" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" @change="updateCategory($event)">
                                     <option value="">All</option>
                                     <option v-for="category in Categories" :value="category.id">{{ category.name }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-3 pt-3">
-                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30">Activity</label>
-                                    <select class="form-select w-100 u-select-v2 u-shadow-v19 g-brd-none g-color-black g-color-primary--hover g-bg-white text-left g-rounded-30 g-pl-30 g-py-12" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" @change="updateGroup($event)">
+                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30" for="event-activity">Activity</label>
+                                    <select id="event-activity" class="form-select w-100 u-select-v2 u-shadow-v19 g-brd-none g-color-black g-color-primary--hover g-bg-white text-left g-rounded-30 g-pl-30 g-py-12" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" @change="updateGroup($event)">
                                     <option value="">All</option>
                                     <option v-for="activity in Groups" :value="activity.id">{{ activity.name }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-3 pt-3">
-                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30">Search</label>
-                                    <input class="form-control u-shadow-v19 g-brd-none g-bg-white g-font-size-16 g-rounded-30 g-px-30 g-py-13 g-mb-30" type="text" name="search" placeholder="Search..." @keyup="search($event)"/>
+                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30" for="event-search" >Search</label>
+                                    <input id="event-search" class="form-control u-shadow-v19 g-brd-none g-bg-white g-font-size-16 g-rounded-30 g-px-30 g-py-13 g-mb-30" aria-label="Search" type="text" name="search" placeholder="Search..." :value=Search @submit.prevent @keyup="search($event)"/>
                                 </div>
-
-                                <div class="col-lg-3 pt-3">
-                                    <label class="g-font-weight-500 g-font-size-15 g-pl-30"></label>
-                                    <button class="btn btn-block u-shadow-v32 g-brd-black g-brd-2 g-color-black g-color-white--hover g-bg-transparent g-bg-black--hover g-font-size-16 g-rounded-30 g-py-10 mr-2 g-mt-0" type="button" @click.prevent="ResetForm" @click="reset()">Reset</button>
+                                <div class="col-lg-2 pt-3 mt-3 d-none d-md-block">
+                                    <button class="btn btn-block u-shadow-v32 g-brd-black g-brd-2 g-color-black g-color-white--hover g-bg-transparent g-bg-black--hover g-font-size-16 g-rounded-30 g-py-10 mr-2 g-mt-0" type="button" @submit.prevent @click="changeView()" v-if="Cards">List View</button>
+                                    <button class="btn btn-block u-shadow-v32 g-brd-black g-brd-2 g-color-black g-color-white--hover g-bg-transparent g-bg-black--hover g-font-size-16 g-rounded-30 g-py-10 mr-2 g-mt-0" type="button" @submit.prevent @click="changeView()" v-else>Card View</button>
+                                </div>
+                                <div class="col-lg-1 pt-3 mt-3">
+                                    <button class="btn btn-block u-shadow-v32 g-brd-black g-brd-2 g-color-black g-color-white--hover g-bg-transparent g-bg-black--hover g-font-size-16 g-rounded-30 g-py-10 mr-2 g-mt-0" type="button" @submit.prevent @click="reset()">Reset</button>
                                 </div>
                             </div>
                         </form>
@@ -39,124 +41,172 @@ let layout = `
         </div>
     </section>
     <!-- Actual Events -->
-    <section class="section blog background--brown">
+    <section class="section blog background--brown" @scroll="onScroll">
         <div class="container">
             <div class="row">
                 <div class="col g-mb-30">
-            <div class="row d-flex justify-content-center m-4" v-if="!Events.length">
-                <p class="h3">No Events Available</p>
-            </div>
-            <div class="row" v-for="event in Events">
-                <article class="card my-2 container">
-                    <div class="row">
-                        <!-- Date -->
-                        <div class="col-md-1 py-sm-3 align-items-center d-flex justify-content-center text-center mt-3">
-                            <time :datetime="event.start_date">
-                            <span   class="d-block g-font-weight-700 g-font-size-40 g-line-height-1 g-color-black">{{ event.start_date | getDay }}</span>
-                            {{ event.start_date | getMonthYear }}
-                            </time>
-                        </div>
-                        <!-- End Date -->
-
-                        <!-- Article Image -->
-                        <a :href=event.URL class="col-md-2 p-2 align-items-center d-flex justify-content-center text-center event-img">
-                            <img v-if=event.thumbnail_url class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid"  :src=event.thumbnail_url alt="" />
-                            <img v-else-if="event.group && event.group.thumbnail_url" class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid" :src=event.group.thumbnail_url alt="" />
-                            <img v-else class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid" src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
-                        </a>
-                        <!-- End Article Image -->
-
-                        <!-- Article Content -->
-                        <div class="g-py-15 g-px-20 col-md-6 text-center text-md-left mt-3">
-
-                            <h4 class="h6 text-uppercase g-font-weight-700 g-mb-0">
-                                <a class="g-color-gray-dark-v2" :href=event.URL v-html="event.title"></a>
-                            </h4>
-
-                            <small><i>Start times from {{ event.start_date | getTime }} <i v-if=event.venue> | {{ event.venue.name }}</i></i></small>
-
-                            <div class="g-mt-0">
-                                {{ event.short_description }}
-                            </div>
-
-                        </div>
-                        <!-- End Article Content -->
-
-                        <!-- Actions -->
-                        <div class="g-pa-20 col-md-2 ml-md-4 align-items-center d-flex justify-content-center text-center">
-                            <div class="row g-mt-minus-10 px-2 py-2" v-if=event.external_tickets>
-                                <a class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
-                                   :href="'/events/id/' + event.event_id + '-' + event.url_name">Info</a>
-                                <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
-                                   :href=event.external_tickets>
-                                Get Tickets</a>
-                            </div>
-                            <div class="row g-mt-minus-10 px-2 py-2" v-else>
-                                <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
-                                :href="'/events/id/' + event.event_id + '-' + event.url_name">Info &amp; Tickets</a>
+                    <div class="row d-flex justify-content-center m-4" v-if="!Events.length">
+                        <p class="h3">No Events Available</p>
+                    </div>
+                    <div v-if="Cards">
+                        <div class="row justify-content-center">
+                            <div class="col-md-3 my-3" v-for="event in Events">
+                                <div class="card">
+                                    <div class="card-header h5 text-center">
+                                        <time :datetime="event.start_date">{{ event.start_date | getDate }}</time>
+                                    </div>
+                                    <img v-if=event.thumbnail_url class="card-img-top"  :src=event.thumbnail_url alt="" />
+                                    <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top" :src=event.group.thumbnail_url alt="" />
+                                    <img v-else class="card-img-top" src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
+                                    <div class="card-body text-center">
+                                        <h2 class="g-color-gray-dark-v2 h5 card-title" v-html="event.title"></h2>
+                                        <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span v-if=event.venue> | {{ event.venue.name }}</span></small></p>
+                                        <p class="card-text">{{ event.short_description }}</p>
+                                        <div class="text-center" v-if=event.external_tickets>
+                                            <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                            :href=event.external_tickets>
+                                            Tickets</a>
+                                        </div>
+                                        <div class="text-center" v-else>
+                                            <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                            :href="'/events/id/' + event.event_id + '-' + event.url_name">Tickets</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- End Actions -->
-                </article>
-                
-                </div>
+                    <div v-else>
+                        <div class="row" v-for="event in Events">
+                            <article class="card my-2 container">
+                                <div class="row">
+                                    <!-- Date -->
+                                    <div class="col-md-1 py-sm-3 align-items-center d-flex justify-content-center text-center mt-3">
+                                        <time :datetime="event.start_date">
+                                        <span   class="d-block g-font-weight-700 g-font-size-40 g-line-height-1 g-color-black">{{ event.start_date | getDay }}</span>
+                                        {{ event.start_date | getMonthYear }}
+                                        </time>
+                                    </div>
+                                    <!-- End Date -->
+                                    <!-- Article Image -->
+                                    <a :href=event.URL class="col-md-2 p-2 align-items-center d-flex justify-content-center text-center event-img">
+                                        <img v-if=event.thumbnail_url class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid"  :src=event.thumbnail_url alt="" />
+                                        <img v-else-if="event.group && event.group.thumbnail_url" class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid" :src=event.group.thumbnail_url alt="" />
+                                        <img v-else class="d-block px-2 g-ml-minus-1 hoverZoomLink img-fluid" src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
+                                    </a>
+                                    <!-- End Article Image -->
+                                    <!-- Article Content -->
+                                    <div class="g-py-15 g-px-20 col-md-6 text-center text-md-left mt-3">
+                                        <h4 class="h6 text-uppercase g-font-weight-700 g-mb-0">
+                                            <a class="g-color-gray-dark-v2" :href=event.URL v-html="event.title"></a>
+                                        </h4>
+                                        <small><i>Start times from {{ event.start_date | getTime }} <i v-if=event.venue> | {{ event.venue.name }}</i></i></small>
+                                        <div class="g-mt-0">
+                                            {{ event.short_description }}
+                                        </div>
+                                    </div>
+                                    <!-- End Article Content -->
+                                    <!-- Actions -->
+                                    <div class="g-pa-20 col-md-2 ml-md-4 align-items-center d-flex justify-content-center text-center">
+                                        <div class="row g-mt-minus-10 px-2 py-2" v-if=event.external_tickets>
+                                            <a class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                            :href="'/events/id/' + event.event_id + '-' + event.url_name">Info</a>
+                                            <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                            :href=event.external_tickets>
+                                            Get Tickets</a>
+                                        </div>
+                                        <div class="row g-mt-minus-10 px-2 py-2" v-else>
+                                            <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+                                            :href="'/events/id/' + event.event_id + '-' + event.url_name">Info &amp; Tickets</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Actions -->
+                            </article>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row d-flex justify-content-center m-3">
+            <div class="row d-flex justify-content-center m-3" v-if="MoreResults">
                 <button type="button" class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10" @click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
             </div>
         </div>
     </section>
 </div>
 `
-
-var app = new Vue({
-    el: "#events",
+    /**
+     * Create a Vue component that fetches events from the Pluto API and displays them as either cards or rows
+     * If the component is passed a groupid, the component will only return that group's events, without the search bar
+     */
+Vue.component('events', {
     template: layout,
+    props: ['groupid'],
     data() {
         return {
             Categories: [],
             Groups: [],
             Events: [],
-            SelectedCategory: '',
+            SelectedType: '',
             SelectedGroup: '',
             Search: '',
             Page: 1,
+            MoreResults: false,
+            Cards: true,
+            Premium: false,
         }
     },
     created() {
         var self = this;
-        //Get Categories
-        axios.get('https://pluto.sums.su/api/events/types?sortBy=name', {
+        //if we have a groupid, only list that group's events
+        if (self.groupid) {
+            self.SelectedGroup = self.groupid;
+        } else {
+            //check if looking for a specific activity, search, etc...
+            let urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('activity')) {
+                self.SelectedGroup = urlParams.get('activity');
+            }
+            if (urlParams.has('search')) {
+                self.Search = urlParams.get('search');
+            }
+            if (urlParams.has('category')) {
+                self.SelectedType = urlParams.get('category');
+            }
+            //Get Categories
+            axios.get('https://pluto.sums.su/api/events/types?sortBy=name', {
                 headers: {
                     'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
                 }
             }).then(function(response) {
                 self.Categories = response.data;
-            })
+            });
             //get Activities
-        axios.get('https://pluto.sums.su/api/groups?sortBy=name&selectList=1', {
+            axios.get('https://pluto.sums.su/api/groups?sortBy=name&selectList=1', {
                 headers: {
                     'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
                 }
             }).then(function(response) {
                 self.Groups = response.data;
-            })
-            //get Events
+            });
+        }
+        //get Events
         self.getEvents();
-
     },
-    computed: {
-        MonthYears() {
-            return [];
-        },
+    mounted() {
+        //allow scrolling functionality
+        this.onScroll();
     },
     methods: {
+        /**
+         * Fetch events from API
+         * @param bool append - are we getting more events to append to the current list?
+         */
         getEvents: function(append = false) {
-            let parameters = 'sortBy=start_date&onlyFuture=1&page=' + this.Page;
-            if (this.SelectedCategory) {
-                parameters += '&typeId=' + this.SelectedCategory;
+
+            let parameters = 'sortBy=start_date&onlyFuture=1&perPage=12&page=' + this.Page;
+            //add relevant parameters to the event search
+            if (this.SelectedType) {
+                parameters += '&typeId=' + this.SelectedType;
             }
             if (this.SelectedGroup) {
                 parameters += '&groupId=' + this.SelectedGroup;
@@ -164,21 +214,47 @@ var app = new Vue({
             if (this.Search) {
                 parameters += '&searchTerm=' + this.Search;
             }
+            //future proofing, in case we want to do something with "premium events"
+            if (this.Premium) {
+                parameters += "&onlyPremium=1";
+            }
             let self = this;
             axios.get('https://pluto.sums.su/api/events?' + parameters, {
                 headers: {
                     'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
                 }
             }).then(function(response) {
+                //if we want more events (append = true), add to array
                 if (append) {
                     self.Events = [...self.Events, ...response.data.data];
                 } else {
+                    //otherwise replace current events
                     self.Events = response.data.data;
+                }
+                //If the API says there are more results (ie another page), update the template accordingly
+                if (response.data.next_page_url) {
+                    self.MoreResults = true
+                } else {
+                    self.MoreResults = false
                 }
             })
         },
+        /**
+         * Track when the user scrolls down the page
+         */
+        onScroll() {
+            window.onscroll = () => {
+                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 10 >= document.documentElement.offsetHeight
+
+                //automatically get more results if at bottom of page
+                if (bottomOfWindow) {
+                    this.moreEvents();
+                }
+            }
+        },
+        //update various fields to change events data
         updateCategory(event) {
-            this.SelectedCategory = event.target.value
+            this.SelectedType = event.target.value
             this.getEvents()
         },
         updateGroup(event) {
@@ -190,18 +266,23 @@ var app = new Vue({
             this.getEvents()
         },
         reset() {
+            //easy way to refresh the page
             location.reload()
         },
         moreEvents() {
             this.Page++;
             this.getEvents(true);
+        },
+        changeView() {
+            this.Cards = !this.Cards;
         }
     }
 });
 
-Vue.filter('formatDate', function(value) {
+//Various filters to formate dates and time for template
+Vue.filter('getDate', function(value) {
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY hh:mm')
+        return moment(String(value)).format('DD MMMM')
     }
 });
 
