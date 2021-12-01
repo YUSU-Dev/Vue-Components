@@ -1,37 +1,181 @@
-{embed="global/.header"}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!--JS-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--Select2-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        @media (max-width: 768px) {
+            .event-img {
+                width: 50%;
+                left: 25%;
+            }
+        }
+    </style>
+</head>
 
-<div class="g-bg-img-hero g-bg-cover g-bg-black-opacity-0_3--after"
-     style="margin-top: 109px !important; background-image: url(https://3206af7111780558b7b3-c0c78907890fbb9cb201844d036b4a41.ssl.cf3.rackcdn.com/header-stock-event.png);">
-    <div class="container g-pos-rel g-z-index-1 g-pt-60 g-pb-20">
-        <div class="row justify-content-lg-between align-items-md-center">
+<body>
+    <div class="g-bg-img-hero g-bg-cover g-bg-black-opacity-0_3--after" style="margin-top: 109px !important; background-image: url(https://3206af7111780558b7b3-c0c78907890fbb9cb201844d036b4a41.ssl.cf3.rackcdn.com/header-stock-event.png);">
+        <div class="container g-pos-rel g-z-index-1 g-pt-60 g-pb-20">
+            <div class="row justify-content-lg-between align-items-md-center">
 
-            <div class="col-md-12 col-lg-12 g-mb-30">
-                <div class="g-color-white text-center g-py-40">
-                    <h1 class="g-font-weight-700 g-font-size-40 g-font-size-70--md text-uppercase">Events</h1>
+                <div class="col-md-12 col-lg-12 g-mb-30">
+                    <div class="g-color-white text-center g-py-40">
+                        <h1 class="g-font-weight-700 g-font-size-40 g-font-size-70--md text-uppercase">Events</h1>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
 
-<main class="main" id="main">
-    <v-events-index></v-events-index>
-</main>
+    <main class="main" id="main">
+        <events typeId=25 smallCard=true></events>
 
-<!--		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script> -->
+    </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="vue-events-v1.3.js"></script>
+    <script>
+        new Vue({
+            el: '#main'
+        })
+    </script>
+    <footer id="footer">
+        <div class="g-bg-black-opacity-0_9 g-color-white-opacity-0_6 g-py-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Footer Content -->
+                    <div class="col-md-5 g-mb-50 g-mb-0--lg">
+                        <h5 class="h6 g-color-white text-uppercase g-font-weight-700 g-mb-20">Contact Us</h5>
+                        <address class="g-mb-20">
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-baseline g-mb-12">
+                                    <i class="fa fa-phone g-mr-10"></i>
+                                    <span>Phone: <a class="g-color-white-opacity-0_8 g-color-white--hover" href="tel:01904323724">01904 32 3724</a></span>
+                                </li>
+                                <li class="d-flex align-items-baseline g-mb-12">
+                                    <i class="fa fa-envelope g-mr-10"></i>
+                                    <span>Email: <a class="g-color-white-opacity-0_8 g-color-white--hover" href="mailto:reception@yusu.org">reception@yusu.org</a></span>
+                                </li>
+                                <li class="d-flex align-items-baseline g-mb-12">
+                                    <span><a class="g-color-white-opacity-0_8 g-color-white--hover" href="/about-us/contact-us">View full Contact Info</a></span>
+                                </li>
+                            </ul>
+                        </address>
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item">
+                                <a aria-label="Facebook" class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-bg-primary--hover g-color-white--hover g-color-white-opacity-0_8 rounded" href="https://www.facebook.com/yorkunisu">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item g-mx-5">
+                                <a aria-label="Twitter" class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-bg-primary--hover g-color-white--hover g-color-white-opacity-0_8 rounded" href="https://twitter.com/yorkunisu">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item g-mx-5">
+                                <a aria-label="Instagram" class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-bg-primary--hover g-color-white--hover g-color-white-opacity-0_8 rounded" href="https://instagram.com/yorkunisu/">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item g-mx-5">
+                                <a aria-label="Snapchat" class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-bg-primary--hover g-color-white--hover g-color-white-opacity-0_8 rounded" href="https://snapchat.com/add/yorkunisu">
+                                    <i class="fab fa-snapchat-ghost"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item g-mx-5">
+                                <a aria-label="YouTube" class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-bg-primary--hover g-color-white--hover g-color-white-opacity-0_8 rounded" href="https://www.youtube.com/user/yusuofficial">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Footer Content -->
+                    <!-- Footer Content -->
+                    <div class="col-md-7 g-mb-30 g-mb-0--lg">
+                        <h5 class="h6 g-color-white text-uppercase g-font-weight-700 g-mb-20">Useful Links</h5>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/organisational-policies/web-accessibility-statement">Accessibility
+                                            Statement</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/advertise-with-us" target="_blank">Advertise With Us</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/organisational-policies/environmental-impact">Environmental
+                                            Impact</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" target="_blank" href="https://apply.yusu.org">Jobs</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/staff">Our
+                                            Staff</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/organisational-policies/refund-policy">Refund Policy</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/organisational-policies/terms-conditions">Terms &amp; Conditions</a>
+                                    </li>
+                                    <li class="d-flex align-items-baseline g-mb-12">
+                                        <i class="fa fa-angle-double-right g-mr-8"></i>
+                                        <a class="g-color-white-opacity-0_6 g-color-white--hover" href="/about-us/organisational-policies/data-protection">Your Privacy</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Footer Content -->
+                </div>
+            </div>
+        </div>
+        <!-- End Footer -->
+        <!-- Copyright Footer -->
+        <div class="g-bg-gray-dark-v1 g-color-white-opacity-0_8 text-center g-py-20">
+            <div class="container">
+                <small class="g-mr-10 g-mb-10 g-mb-0--md">
+                    Registered in England and Wales | Charity Registration #1173404 | Charity Company #10688097 | VAT
+                    #GB272458389 |
+                </small>
+            </div>
+            <div class="container">
+                <small class="g-mr-10 g-mb-10 g-mb-0--md">
+                    2021 © University of York Students' Union | All rights reserved | <a class="color-light-pink g-color-white--hover" href="https://sums.su" target="_blank" rel="noopener noreferrer">Powered by SUMS</a>
+                </small>
+            </div>
+        </div>
+        <!-- End Copyright Footer -->
+    </footer>
+</body>
 
-<script src="https://yusu.org/events-test/events.js"></script>
-
-<script>
-    var app = new Vue({
-        el: '#main'
-    });
-</script>
-
-{embed="global/.footer"}
+</html>

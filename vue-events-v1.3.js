@@ -1,6 +1,6 @@
 let layout = `
 <div>
-    <section class="pt-3 g-bg-gray-light-v5" ref="NewsTop" v-if="!groupid">
+    <section class="pt-3 g-bg-gray-light-v5" ref="NewsTop" v-if="!ShortView">
         <div class="contacts-wrapper">
             <div class="container">
                 <div class="row">
@@ -56,7 +56,7 @@ let layout = `
                     <div v-if="Cards">
                         <div class="row justify-content-center">
                             <div class="col-md-3 my-3" v-for="event in Events">
-                                <div class="card">
+                                <div class="card h-100">
                                     <div class="card-header h5 text-center" style="color:black !important;"><em>
                                         <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
                                     </div>
@@ -68,15 +68,17 @@ let layout = `
                                             <h2 class="g-color-gray-dark-v2 h5 card-title" v-html="event.title"></h2>
                                         </a>
                                         <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span v-if=event.venue> | {{ event.venue.name }}</span></small></p>
-                                        <p class="card-text">{{ event.short_description }}</p>
+                                        <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
+                                    </div>
+                                    <div class="card-footer bg-white">
                                         <div class="text-center" v-if=event.external_tickets>
                                             <a class="btn btn-xl u-btn-primary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
                                             :href=event.external_tickets>
                                             Tickets</a>
                                         </div>
                                         <div class="text-center" v-else>
-                                            <a class="btn btn-xl u-btn-primary rounded-0 g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10 text-white"
-                                            :href="'/events/id/' + event.event_id + '-' + event.url_name">Tickets</a>
+                                            <a class="btn btn-xl u-btn-primary rounded-0 g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10 text-white event-info-button"
+                                            :href="'/events/id/' + event.event_id + '-' + event.url_name">More Information</a>
                                         </div>
                                     </div>
                                 </div>
@@ -143,11 +145,11 @@ let layout = `
 `
     /**
      * Create a Vue component that fetches events from the Pluto API and displays them as either cards or rows
-     * If the component is passed a groupid, the component will only return that group's events, without the search bar
+     * If the component is passed a groupid, 'typeid' or 'venueid' the component will only return that group/type/venue's events, without the search bar
      */
 Vue.component('events', {
     template: layout,
-    props: ['groupid'],
+    props: ['groupid', 'typeid', 'venueid', 'smallcard'],
     data() {
         return {
             Categories: [],
@@ -155,11 +157,13 @@ Vue.component('events', {
             Events: [],
             SelectedType: '',
             SelectedGroup: '',
+            SelectedVenue: '',
             Search: '',
             Page: 1,
             MoreResults: false,
             Cards: true,
             Premium: false,
+            ShortView: false,
         }
     },
     created() {
@@ -167,6 +171,13 @@ Vue.component('events', {
         //if we have a groupid, only list that group's events
         if (self.groupid) {
             self.SelectedGroup = self.groupid;
+            self.ShortView = true;
+        } else if (self.typeid) {
+            self.SelectedType = self.typeid;
+            self.ShortView = true;
+        } else if (self.venueid) {
+            self.SelectedVenue = self.venueid;
+            self.ShortView = true;
         } else {
             //check if looking for a specific activity, search, etc...
             let urlParams = new URLSearchParams(window.location.search);
@@ -217,6 +228,9 @@ Vue.component('events', {
             }
             if (this.SelectedGroup) {
                 parameters += '&groupId=' + this.SelectedGroup;
+            }
+            if (this.SelectedVenue) {
+                parameters += '&venueId=' + this.SelectedVenue;
             }
             if (this.Search) {
                 parameters += '&searchTerm=' + this.Search;
