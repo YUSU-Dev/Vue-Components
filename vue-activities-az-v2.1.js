@@ -95,7 +95,7 @@ let layout = `
             <!-- Activity end-->
 
             <div class="row d-flex justify-content-center m-3" v-if="MoreResults">
-                <button type="button" class="btn-more" @click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
+                <button type="button" class="btn-more" @click="moreGroups()">Load More <i class="fa fa-chevron-down"></i></button>
             </div>
         </div>
     </div>
