@@ -14,40 +14,37 @@ let layout = `
             v-on:keyup="search($event)"/>
         </div>
         <div class="col-12 text-center" v-if="Search">
-            <h3>Search Results</h3>
+            <p class="h3">Search Results</p>
         </div>
         <div class="col-sm-12 d-lg-none" v-if="!Search">
             <section class="section contacts no-padding-bottom no-padding-top">
                 <div class="contacts-wrapper">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <form>
-                                    <p class="form__title h6">Filter</p>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label>Category</label>
-                                            <select class="form__field d-block d-sm-inline-block" v-model="SelectedCategory">
-                                                <option value="" selected>Please Select a Category</option>
-                                                <option v-for="Category in Categories">{{ Category.name }}
-                                                </option>
-                                            </select>
-                                        </div>
+                        <form>
+                            <p class="form__title h6">Filters</p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>Category</label>
+                                    <select class="form__field d-block d-sm-inline-block" v-model="SelectedCategory">
+                                        <option value="" selected>Please Select a Category</option>
+                                        <option v-for="Category in Categories">{{ Category.name }}
+                                        </option>
+                                    </select>
+                                </div>
 
-                                        <div class="col-12 g-pt-10">
-                                            <label>Search</label>
-                                            <input aria-label="search for an activity" type="text" class="form__field d-block d-sm-inline-block" placeholder="Search..." v-model="Search">
-                                        </div>
-                                    </div>
-                                </form>
+                                <div class="col-12 g-pt-10">
+                                    <label>Search</label>
+                                    <input aria-label="search for an activity" type="text" class="form__field d-block d-sm-inline-block" placeholder="Search..." v-on:keyup="search($event)">
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </section>
         </div>
         <div class="col-lg-12 d-none d-lg-block" v-if="!Search">
             <div class="nav-societies-type text-center">
+                <p class="h3">Filters</p>
                 <ul class="clubs-nav-block nav nav-tabs nav-justified u-nav-v2-1 u-nav-rounded-3 u-nav-primary g-mb-30" data-btn-classes="btn btn-md btn-block u-btn-outline-primary g-mb-30">
                     <li v-for="Parent in ParentCategories" @click.prevent="SelectedParent = Parent; SelectedCategory = ''; getGroups();" class="nav-item">
                         <a v-bind:class="{'active':(SelectedParent.id === Parent.id)}" class="nav-link">
@@ -80,11 +77,22 @@ let layout = `
                                 class="d-none d-md-block justify-content-center" 
                                 style="height: 9em;overflow:hidden; background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" 
                                 v-bind:style="'background-image:url(' + Activity.thumbnail_url + ');'"
-                                alt="" />
+                                v-bind:alt="Activity.name + ' Logo'" />
                             <div v-else class="d-none d-md-block justify-content-center" 
                                 style="height: 9em;overflow:hidden ;background-image:url('https://yusu.s3.eu-west-2.amazonaws.com/sums/website/images/placeholder-events.png');
                                 background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" 
-                                alt=""/>
+                                alt="Yusu Activities Logo"/>
+                            <div v-if="Activity.thumbnail_url" 
+                                class="d-md-none justify-content-center" 
+                                style="height: 9em;overflow:hidden; background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" 
+                                v-bind:style="'background-image:url(' + Activity.thumbnail_url + ');'"
+                                v-bind:alt="Activity.name + ' Logo'" />
+                            <div v-else 
+                                class="d-md-none justify-content-center" 
+                                style="height: 5em;overflow:hidden ;background-image:url('https://yusu.s3.eu-west-2.amazonaws.com/sums/website/images/placeholder-events.png');
+                                background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" 
+                                alt="Yusu Activities Logo" />
+                            
                         </div>
                         <div class="h6 g-color-grey g-mb-5 text-center align-bottom btn-block">
                             <p class="g-color-black">{{ Activity.name }}</p>
@@ -130,10 +138,10 @@ Vue.component('VActivitiesAZ', {
             headers: {
                 'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
             }
-        }).then(function(response) {
+        }).then(function (response) {
             response.data.forEach(category => {
                 //We only want Societies or sports - sums limitation
-                if (category.id==2 || category.id==24){
+                if (category.id == 2 || category.id == 24) {
                     self.ParentCategories = [...self.ParentCategories, category];
                 }
             });
@@ -143,29 +151,25 @@ Vue.component('VActivitiesAZ', {
             headers: {
                 'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
             }
-        }).then(function(response) {
+        }).then(function (response) {
             self.Categories = response.data;
         });
 
         self.getGroups();
-    },
-    mounted() {
-        //allow scrolling functionality
-        this.onScroll();
     },
     methods: {
         /**
          * Fetch groups from API
          * @param bool append - are we getting more groups to append to the current list?
          */
-        getGroups: function(append = false){
+        getGroups: function (append = false) {
             let self = this;
-            if(!append) {self.Page = 1;}
+            if (!append) { self.Page = 1; }
             let parameters = 'sortBy=name&perPage=25&page=' + self.Page;
             //add relevant parameters to the group search
-            if (self.Search){
-                parameters +='&searchTerm=' + self.Search;
-                self.SelectedCategory=self.SelectedParent="";
+            if (self.Search) {
+                parameters += '&searchTerm=' + self.Search;
+                self.SelectedCategory = self.SelectedParent = "";
             } else if (self.SelectedCategory) {
                 parameters += '&categoryId=' + self.SelectedCategory.id;
             } else if (self.SelectedParent) {
@@ -175,7 +179,7 @@ Vue.component('VActivitiesAZ', {
                 headers: {
                     'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
                 }
-            }).then(function(response) {
+            }).then(function (response) {
                 //if we want more events (append = true), add to array
                 if (append) {
                     self.Groups = [...self.Groups, ...response.data.data];
@@ -191,19 +195,6 @@ Vue.component('VActivitiesAZ', {
                 }
             })
         },
-        /**
-         * Track when the user scrolls down the page
-         */
-         onScroll() {
-            window.onscroll = () => {
-                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 10 >= document.documentElement.offsetHeight
-
-                //automatically get more results if at bottom of page
-                if (bottomOfWindow) {
-                    this.moreGroups();
-                }
-            }
-        },
         moreGroups() {
             this.Page++;
             this.getGroups(true);
@@ -216,11 +207,11 @@ Vue.component('VActivitiesAZ', {
     computed: {
         filteredCategories() {
             let self = this;
-            return this.Categories.filter(category =>{
+            return this.Categories.filter(category => {
                 if (self.SelectedParent) {
                     return category.parent_id == self.SelectedParent.id
                 }
-                
+
             });
         }
     }
