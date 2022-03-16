@@ -65,7 +65,7 @@ let layout = `
                                     <img v-else class="card-img-top" src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
                                     <div class="card-body text-center">
                                         <a :href="'/events/id/' + event.event_id + '-' + event.url_name">
-                                            <h2 class="g-color-gray-dark-v2 h5 card-title" v-html="event.title"></h2>
+                                            <h2 class="g-color-gray-dark-v2 h5 card-title" v-html="event.event_date_title"></h2>
                                         </a>
                                         <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span v-if=event.venue> | {{ event.venue.name }}</span></small></p>
                                         <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
