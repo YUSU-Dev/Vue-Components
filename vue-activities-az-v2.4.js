@@ -43,7 +43,7 @@ let layout = `
         <div class="col-12">
             <hr />
         </div>
-        <div class="row socs-list g-mb-10 p-0 justify-content-center">
+        <div class="row socs-list g-mb-10 p-0 justify-content-center w-100">
           <!-- Activity -->
           <div class="col-5 col-md-2 mx-2 my-2 activity-article d-block" v-for="Activity in Groups">
             <div>
@@ -88,13 +88,16 @@ let layout = `
 
 Vue.component('VActivitiesAZ', {
     template: layout,
+    props: ['selectedparents'],
     data() {
         return {
             Categories: [],
+            CategoryIDs: "",
             ParentCategories: [],
             Groups: [],
             SelectedCategory: "",
             SelectedParent: "",
+            SelectedParents: [],
             Search: '',
             Page: 1,
             MoreResults: false,
@@ -102,6 +105,11 @@ Vue.component('VActivitiesAZ', {
     },
     created() {
         var self = this;
+        if (self.selectedparents){
+          self.SelectedParents = self.selectedparents.split(",");
+        } else {
+          
+        }
         //check if looking for a specific activity, search, etc...
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('search')) {
@@ -114,22 +122,25 @@ Vue.component('VActivitiesAZ', {
             }
         }).then(function (response) {
             response.data.forEach(category => {
-                //We only want Societies or sports - sums limitation
-                if (category.id == 2 || category.id == 24) {
+                if (self.SelectedParents.includes(category.id.toString())) {
                     self.ParentCategories = [...self.ParentCategories, category];
                 }
             });
         });
         //get categories
-        axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=0', {
+        axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=0&parentIds=' + self.selectedparents , {
             headers: {
                 'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
             }
         }).then(function (response) {
             self.Categories = response.data;
+            let idArray = self.Categories.map(function(item) {
+              return item['id'];
+            });
+            self.CategoryIDs = idArray.join();
+            console.log(self.CategoryIDs);
+            self.getGroups();
         });
-
-        self.getGroups();
     },
     methods: {
         /**
@@ -139,7 +150,7 @@ Vue.component('VActivitiesAZ', {
         getGroups: function (append = false) {
             let self = this;
             if (!append) { self.Page = 1; }
-            let parameters = 'sortBy=name&perPage=20&page=' + self.Page;
+            let parameters = 'sortBy=name&perPage=20&page=' + self.Page + '&categoryIds=' + self.CategoryIDs ;
             //add relevant parameters to the group search
             if (self.Search) {
                 parameters += '&searchTerm=' + self.Search;

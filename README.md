@@ -25,7 +25,8 @@ v2.x uses the Pluto API
 
 ## Parameters
 ---
-The ```<v-activities-a-z >``` component does not have any parameters.
+```selectedparents``` (Required): comma separated string of parent categories to display.  
+eg. ```<v-activities-a-z selectedparents="2,24"></v-activities-a-z>``` returns Sport Clubs and Societies at YUSU  
 
 ### URL Parameters
 
