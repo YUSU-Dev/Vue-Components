@@ -1,5 +1,5 @@
 let layout = `
-<div>
+<div class="w-100">
     <section class="pt-3 g-bg-gray-light-v5" ref="NewsTop" v-if="!ShortView">
         <div class="contacts-wrapper">
             <div class="container">
