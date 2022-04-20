@@ -4,8 +4,8 @@ let layout = `
       <div class="row activities-list justify-content-center">
         <div class="col-12 text-center col-lg-8 pb-2">
           <div class="heading heading--primary heading--center pb-2">
-            <h2 class="heading__title d-none d-lg-block">Clubs and Societies: A-Z</h2>
-            <p class="h3 d-block d-lg-none text-dark">Clubs and Societies: A-Z</p>
+            <h2 class="heading__title d-none d-lg-block">{{title}}</h2>
+            <p class="h3 d-block d-lg-none text-dark">{{title}}</p>
           </div>
         </div>
         <div class="col-8 col-lg-4 my-auto">
@@ -16,7 +16,7 @@ let layout = `
         <div class="col-12 text-center" v-if="Search">
           <p class="h3">Search Results</p>
         </div>
-        <div class="col-12 d-none d-lg-block" v-if="!Search">
+        <div class="col-12 d-none d-lg-block" v-if="!Search && ParentCategories.length > 0">
           <div class="nav-societies-type text-center">
             <p class="h3">Filters</p>
             <ul class="clubs-nav-block nav nav-tabs nav-justified u-nav-v2-1 u-nav-rounded-3 u-nav-primary g-mb-30" data-btn-classes="btn btn-md btn-block u-btn-outline-primary g-mb-30">
@@ -88,7 +88,7 @@ let layout = `
 
 Vue.component('VActivitiesAZ', {
     template: layout,
-    props: ['selectedparents'],
+    props: ['selectedparents', 'title', 'selectedcategory'],
     data() {
         return {
             Categories: [],
@@ -105,42 +105,52 @@ Vue.component('VActivitiesAZ', {
     },
     created() {
         var self = this;
-        if (self.selectedparents){
+        if (self.selectedparents) {
           self.SelectedParents = self.selectedparents.split(",");
+        } else if (self.selectedcategory) {
+          self.CategoryIDs = self.selectedcategory;
         } else {
-          
+          self.SelectedParents = "2,24";
+        }
+        
+        if (!self.title){
+          self.title = "Clubs and Societies: A-Z";
         }
         //check if looking for a specific activity, search, etc...
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('search')) {
             self.Search = urlParams.get('search');
         }
-        //Get parents
-        axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=1', {
-            headers: {
-                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
-            }
-        }).then(function (response) {
-            response.data.forEach(category => {
-                if (self.SelectedParents.includes(category.id.toString())) {
-                    self.ParentCategories = [...self.ParentCategories, category];
-                }
-            });
-        });
-        //get categories
-        axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=0&parentIds=' + self.selectedparents , {
-            headers: {
-                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
-            }
-        }).then(function (response) {
-            self.Categories = response.data;
-            let idArray = self.Categories.map(function(item) {
-              return item['id'];
-            });
-            self.CategoryIDs = idArray.join();
-            console.log(self.CategoryIDs);
-            self.getGroups();
-        });
+        //if we already have a category, don't get more info
+        if (!self.selectedcategory) {
+          //Get parents
+          axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=1', {
+              headers: {
+                  'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+              }
+          }).then(function (response) {
+              response.data.forEach(category => {
+                  if (self.SelectedParents.includes(category.id.toString())) {
+                      self.ParentCategories = [...self.ParentCategories, category];
+                  }
+              });
+          });
+          //get categories
+          axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=0&parentIds=' + self.selectedparents , {
+              headers: {
+                  'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+              }
+          }).then(function (response) {
+              self.Categories = response.data;
+              let idArray = self.Categories.map(function(item) {
+                return item['id'];
+              });
+              self.CategoryIDs = idArray.join();
+              self.getGroups();
+          });
+        } else {
+          self.getGroups();
+        }
     },
     methods: {
         /**
@@ -150,8 +160,11 @@ Vue.component('VActivitiesAZ', {
         getGroups: function (append = false) {
             let self = this;
             if (!append) { self.Page = 1; }
-            let parameters = 'sortBy=name&perPage=20&page=' + self.Page + '&categoryIds=' + self.CategoryIDs ;
+            let parameters = 'sortBy=name&perPage=20&page=' + self.Page;
             //add relevant parameters to the group search
+            if (self.CategoryIDs) {
+              parameters += '&categoryIds=' + self.CategoryIDs;
+            }
             if (self.Search) {
                 parameters += '&searchTerm=' + self.Search;
                 self.SelectedCategory = self.SelectedParent = "";

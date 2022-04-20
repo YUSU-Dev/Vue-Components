@@ -25,8 +25,12 @@ v2.x uses the Pluto API
 
 ## Parameters
 ---
-```selectedparents``` (Required): comma separated string of parent categories to display.  
+```selectedparents```: comma separated string of parent categories to display.  
 eg. ```<v-activities-a-z selectedparents="2,24"></v-activities-a-z>``` returns Sport Clubs and Societies at YUSU  
+
+```selectedcategory```: A single category to diplay. Will hide filters, but not search
+
+```title```: Set title of the component
 
 ### URL Parameters
 
