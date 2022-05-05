@@ -136,7 +136,7 @@ let layout = `
                     </div>
                 </div>
             </div>
-            <div class="row d-flex justify-content-center m-3" v-if="MoreResults">
+            <div class="row d-flex justify-content-center m-3" v-if="MoreResults && !limit">
                 <button type="button" class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10" @click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
             </div>
         </div>
