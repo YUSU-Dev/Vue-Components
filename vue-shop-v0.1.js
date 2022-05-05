@@ -1,0 +1,207 @@
+let layout = `
+<div class="w-100">
+    <div class="pt-3 sidebar-coloured" >
+        <div class="container">
+            <h2 class="h6">Shop Filters</h2>
+            <div class="row">
+                <div class="col-lg-3 form-group">
+                    <label for="shop-search">Search</label>
+                    <div class="input-group mb-3">
+                        <input id="shop-search" class="form-control" aria-label="Search" type="text" name="search" placeholder="Search..." :value=Search v-on:keyup="search($event)" />
+                    </div>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <label for="shop-categories">Categories</label>
+                    <select id="shop-categories" class="form-control" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" v-model="SelectedCategory" @change="updateCategory($event)">
+                        <option value="">All</option>
+                        <option v-for="category in Categories" :value="category.id">{{ category.name }}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <label for="shop-group">Activities</label>
+                    <select disabled id="shop-group" class="form-control" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" v-model="SelectedGroup" @change="updateGroup($event)">
+                        <option value="">All</option>
+                        <option v-for="activity in Groups" :value="activity.id">{{ activity.name }}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+                    <button type="button" class="btn btn-secondary rounded mt-auto" v-on:click="showAll()" ref="showAllButton">Show All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-4 text-center">
+        <div class="container">
+            <div class="m-4 text-center" v-if="!Products.length">
+                <h3> No products found</h3>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 my-3 d-flex align-items-stretch" v-for="product in Products">
+                    <div class="card">
+                        <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
+                        <!-- Group images not implemented yet! img v-else-if="product.group && product.group.thumbnail_url" class="card-img-top" :src=product.group.thumbnail_url alt="" / -->
+                        <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/website/500x500_Placeholder.jpg" alt="" />
+                        <div class="card-body d-flex flex-column text-center">
+                            <h2 class="g-color-gray-dark-v2 h5 card-title">{{ product.name }}</h2>
+                            <p class="card-text mt-auto" v-if=product.group_name>{{ product.group_name }}</p>
+                            <p class="card-text mt-auto" v-if="product.price > 0">{{ product.price | toCurrency }}</p>
+                            <p class="card-text mt-auto" v-else>Free</p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="text-center">
+                                <a class="btn u-btn-primary m-1"
+                                :href="'/shop/product/' + product.id + '-' + product.url_name">More Information</a>
+                                <a class="btn btn-xl u-btn-primary m-1"
+                                :href="'javascript:addToBasket(' + product.id + ')'">Add to Basket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center m-3" v-if="MoreResults">
+                <button type="button" class="btn u-btn-secondary rounded-0 text-uppercase" @click="moreProducts()">Load More <i class="fa fa-chevron-down"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+`
+
+Vue.component('shop', {
+    template: layout,
+    props: [],
+    data() {
+        return {
+            Products: [],
+            Groups: [],
+            Categories: [],
+            Search: '',
+            SelectedGroup: '',
+            SelectedCategory: '',
+            Page: 1,
+            MoreResults: false,
+            ShopOnly: true,
+        }
+    },
+    created() {
+        var self = this;
+        //get Products
+        self.getProducts();
+        //Get Categories
+        axios.get('https://pluto.sums.su/api/products/categories?sortBy=name', {
+            headers: {
+                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+            }
+        }).then(function(response) {
+            self.Categories = response.data;
+        });
+        //get Activities
+        axios.get('https://pluto.sums.su/api/groups?sortBy=name&selectList=1', {
+            headers: {
+                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+            }
+        }).then(function(response) {
+            self.Groups = response.data;
+        });
+    },
+    mounted() {
+        //allow scrolling functionality
+        this.onScroll();
+    },
+    methods: {
+        /**
+         * Fetch products from API
+         * @param bool append - are we getting more events to append to the current list?
+         */
+        getProducts: function(append = false) {
+            var self = this;
+            let parameters = 'sortBy=name&perPage=12&hasStock=1&'+ (self.ShopOnly ? 'shopItems=1':'') +'&page=' + self.Page;
+            //add relevant parameters to the event search
+            if (self.Search) {
+                parameters += '&searchTerm=' + self.Search;
+            }
+            if (self.SelectedCategory) {
+                parameters += '&categoryId=' + self.SelectedCategory;
+            }
+            if (self.SelectedGroup) {
+                //parameters += '&groupId=' + self.SelectedGroup;
+            }
+            axios.get('https://pluto.sums.su/api/products?' + parameters, {
+                headers: {
+                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                }
+            }).then(function(response) {
+                //if we want more events (append = true), add to array
+                if (append) {
+                    self.Products = [...self.Products, ...response.data.data];
+                } else {
+                    //otherwise replace current events
+                    self.Products = response.data.data;
+                }
+                //If the API says there are more results (ie another page), update the template accordingly
+                if (response.data.next_page_url) {
+                    self.MoreResults = true
+                } else {
+                    self.MoreResults = false
+                }
+            })
+        },
+        /**
+         * choose category
+         * @param event - event from select box
+         */
+        updateCategory(event) {
+            this.SelectedCategory = event.target.value
+            this.getProducts()
+        },
+        /**
+         * Choose Group
+         * @param event - event from select box
+         */
+        updateGroup(event) {
+            return;//groups don't exist yet :) TODO re-implement once api exists
+            this.SelectedGroup = event.target.value
+            this.getProducts()
+        },
+        /**
+         * Search for product
+         * @param event - onkeyup event from input box
+         */
+         search(event) {
+            this.Search = event.target.value
+            this.getProducts();
+        },
+        moreProducts() {
+            this.Page++;
+            this.getProducts(true);
+        },
+        showAll() {
+            this.ShopOnly = !this.ShopOnly;
+            this.getProducts();
+            this.$refs.showAllButton.innerText = this.ShopOnly? 'Show All' : 'Show YUSU Shop';
+        },
+        /**
+         * Track when the user scrolls down the page
+         */
+        onScroll() {
+            window.onscroll = () => {
+                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 10 >= document.documentElement.offsetHeight
+
+                //automatically get more results if at bottom of page
+                if (bottomOfWindow) {
+                    this.moreProducts();
+                }
+            }
+        },      
+    }
+});
+
+Vue.filter('toCurrency', function (value) {
+    if (typeof value !== "number") {
+        return value;
+    }
+    var formatter = new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+    });
+    return formatter.format(value);
+});
