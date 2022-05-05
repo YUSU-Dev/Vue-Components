@@ -218,7 +218,9 @@ Vue.component('events', {
     },
     mounted() {
         //allow scrolling functionality
-        this.onScroll();
+        if (!this.limit){
+            this.onScroll();
+        }
     },
     methods: {
         /**
