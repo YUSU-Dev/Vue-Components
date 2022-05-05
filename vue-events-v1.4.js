@@ -149,7 +149,7 @@ let layout = `
      */
 Vue.component('events', {
     template: layout,
-    props: ['groupid', 'typeid', 'venueid', 'smallcard'],
+    props: ['groupid', 'typeid', 'venueid', 'smallcard', 'limit'],
     data() {
         return {
             Categories: [],
@@ -177,6 +177,8 @@ Vue.component('events', {
             self.ShortView = true;
         } else if (self.venueid) {
             self.SelectedVenue = self.venueid;
+            self.ShortView = true;
+        } else if (self.limit){
             self.ShortView = true;
         } else {
             //check if looking for a specific activity, search, etc...
@@ -221,8 +223,13 @@ Vue.component('events', {
          */
         getEvents: function(append = false) {
 
-            let parameters = 'sortBy=start_date&futureOrOngoing=1&perPage=12&page=' + this.Page;
+            let parameters = 'sortBy=start_date&futureOrOngoing=1&page=' + this.Page;
             //add relevant parameters to the event search
+            if (this.limit) {
+                parameters += '&perPage=' + this.limit;
+            } else {
+                parameters += '&perPage=12';
+            }
             if (this.SelectedType) {
                 parameters += '&typeId=' + this.SelectedType;
             }

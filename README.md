@@ -25,6 +25,7 @@ The ```<events>``` component can be passed the following arguments to change wha
 - typeId [Int] - Show events by this event Type
 - groupId [Int] - Show events by this SUMS activity
 - venueId [Int] - Show events in this venue
+- limit [Int] - only show this many cards
 
 If any of the above arguments are included, the component will not show the search/filter bar, so can be included in a smaller section of the page.
 
