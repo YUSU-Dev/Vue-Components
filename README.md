@@ -30,6 +30,7 @@ The ```<events>``` component can be passed the following arguments to change wha
 If any of the above arguments are included, the component will not show the search/filter bar, so can be included in a smaller section of the page.
 
 - smallCard [Bool] - Don't show the event description to reduce the event card size
+- premium [Bool] - Only show "premium" tagged events in SUMS
 
 ## Examples
 ---

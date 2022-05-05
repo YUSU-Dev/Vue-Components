@@ -149,7 +149,7 @@ let layout = `
      */
 Vue.component('events', {
     template: layout,
-    props: ['groupid', 'typeid', 'venueid', 'smallcard', 'limit'],
+    props: ['groupid', 'typeid', 'venueid', 'smallcard', 'limit', 'premium'],
     data() {
         return {
             Categories: [],
@@ -168,6 +168,10 @@ Vue.component('events', {
     },
     created() {
         var self = this;
+        //Only show "premium" tagged events
+        if (self.premium){
+            self.Premium = true;
+        }
         //if we have a groupid, only list that group's events
         if (self.groupid) {
             self.SelectedGroup = self.groupid;
@@ -242,7 +246,6 @@ Vue.component('events', {
             if (this.Search) {
                 parameters += '&searchTerm=' + this.Search;
             }
-            //future proofing, in case we want to do something with "premium events"
             if (this.Premium) {
                 parameters += "&onlyPremium=1";
             }
