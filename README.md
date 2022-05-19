@@ -18,6 +18,8 @@ Events are sorted by start Date and only currentOrFuture events are included.
 
 The included index.html document can be used for local testing.
 
+If the page has [Select2](https://select2.org/) loaded, the two select dropdowns will load as searchable select2 dropdowns
+
 ## Parameters
 ---
 The ```<events>``` component can be passed the following arguments to change what is displayed:
