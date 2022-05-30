@@ -3,34 +3,37 @@ let layout = `
     <div v-if="ShortView">
         <div class="text-center scrolling-wrapper flex-nowrap flex-lg-wrap justify-content-lg-center position-relative py-3">
             <div class="scroll-item m-2" v-for="event in Events">
-                <div class="card h-100">
-                    <div class="card-header h5 text-center" style="color:black !important;"><em>
-                            <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
-                    </div>
-                    <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
-                    <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
-                        :src=event.group.thumbnail_url alt="" />
-                    <img v-else class="card-img-top"
-                        src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
-                    <div class="card-body text-center">
-                        <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
-                        <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
-                                    v-if=event.venue> | {{ event.venue.name }}</span></small></p>
-                        <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
-                    </div>
-                    <div class="card-footer p-0 bg-white">
-                        <div class="text-center" v-if=event.external_tickets>
-                            <a class="btn btn-xl btn-secondary rounded text-uppercase p-3 m-2 text-wrap"
-                                :href=event.external_tickets>
-                                Tickets
-                            </a>
+                <a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
+                    <div class="card h-100">
+                        <div class="card-header h5 text-center" style="color:black !important;"><em>
+                                <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
                         </div>
-                        <div class="text-center" v-else>
-                            <a class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap"
-                                :href="'/events/id/' + event.event_id + '-' + event.url_name">More Information</a>
+                        <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
+                        <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
+                            :src=event.group.thumbnail_url alt="" />
+                        <img v-else class="card-img-top"
+                            src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
+                        <div class="card-body text-center">
+                            <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
+                            <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
+                                        v-if=event.venue> | {{ event.venue.name }}</span></small></p>
+                            <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
+                        </div>
+                        <div class="card-footer p-0 bg-white">
+                            <div class="text-center" v-if=event.external_tickets>
+                                <a class="btn btn-xl btn-secondary rounded text-uppercase p-3 m-2 text-wrap"
+                                    :href=event.external_tickets>
+                                    Tickets
+                                </a>
+                            </div>
+                            <div class="text-center" v-else>
+                                <p class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
+                                    More Information
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -49,8 +52,7 @@ let layout = `
                                             data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up"
                                             @change="updateCategory($event)">
                                             <option value="">All</option>
-                                            <option v-for="category in Categories" :value="category.id">{{ category.name
-                                                }}</option>
+                                            <option v-for="category in Categories" :value="category.id">{{ category.name }}</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3 pt-3">
@@ -96,35 +98,37 @@ let layout = `
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-6 col-md-3 my-3" v-for="event in Events">
-                                <div class="card h-100">
-                                    <div class="card-header h5 text-center" style="color:black !important;"><em>
-                                            <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
-                                    </div>
-                                    <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
-                                    <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
-                                        :src=event.group.thumbnail_url :alt="event.group.name + ' Logo'" />
-                                    <img v-else class="card-img-top"
-                                        src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
-                                        alt="" />
-                                    <div class="card-body text-center">
-                                        <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
-                                        <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
-                                                    v-if=event.venue> | {{ event.venue.name }}</span></small></p>
-                                        <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
-                                    </div>
-                                    <div class="card-footer p-0 bg-white">
-                                        <div class="text-center" v-if=event.external_tickets>
-                                            <a class="btn btn-xl btn-secondary yu-bg-primary rounded text-uppercase p-3 m-2 text-wrap"
-                                                :href=event.external_tickets>
-                                                Tickets</a>
+                                <a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
+                                    <div class="card h-100">
+                                        <div class="card-header h5 text-center" style="color:black !important;"><em>
+                                                <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
                                         </div>
-                                        <div class="text-center" v-else>
-                                            <a class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap"
-                                                :href="'/events/id/' + event.event_id + '-' + event.url_name">More
-                                                Information</a>
+                                        <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
+                                        <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
+                                            :src=event.group.thumbnail_url :alt="event.group.name + ' Logo'" />
+                                        <img v-else class="card-img-top"
+                                            src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
+                                            alt="" />
+                                        <div class="card-body text-center">
+                                            <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
+                                            <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
+                                                        v-if=event.venue> | {{ event.venue.name }}</span></small></p>
+                                            <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
+                                        </div>
+                                        <div class="card-footer p-0 bg-white">
+                                            <div class="text-center" v-if=event.external_tickets>
+                                                <a class="btn btn-xl btn-secondary yu-bg-primary rounded text-uppercase p-3 m-2 text-wrap"
+                                                    :href=event.external_tickets>
+                                                    Tickets</a>
+                                            </div>
+                                            <div class="text-center" v-else>
+                                                <p class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
+                                                    More Information
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -182,8 +186,8 @@ Vue.component('events', {
         } else {
             //check if looking for a specific activity, search, etc...
             let urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('activity')) {
-                self.SelectedGroup = urlParams.get('activity');
+            if (urlParams.has('activity_id')) {
+                self.SelectedGroup = urlParams.get('activity_id');
             }
             if (urlParams.has('search')) {
                 self.Search = urlParams.get('search');
@@ -210,10 +214,6 @@ Vue.component('events', {
         }
         //get Events
         self.getEvents();
-        
-        
-        
-        
     },
     mounted() {
         //allow scrolling functionality
@@ -231,7 +231,8 @@ Vue.component('events', {
          * @param bool append - are we getting more events to append to the current list?
          */
         getEvents: function(append = false) {
-
+            let self = this;
+            if (!append) { self.Page = 1; }
             let parameters = 'sortBy=start_date&futureOrOngoing=1&page=' + this.Page;
             //add relevant parameters to the event search
             if (this.limit) {
@@ -254,7 +255,6 @@ Vue.component('events', {
             if (this.Premium) {
                 parameters += "&onlyPremium=1";
             }
-            let self = this;
             axios.get('https://pluto.sums.su/api/events?' + parameters, {
                 headers: {
                     'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
