@@ -28,5 +28,5 @@ The included index.html document can be used for local testing.
 The ```<shop>``` component can be passed the following arguments to change what is displayed:
 
 - title [```string```] - Title for the shop element, eg "YUSU Shop"
-- yusushop [```boolean```] - Show just YUSU shop items, rather than every product on sale
+- featuredshop [```boolean```] - Show just YUSU shop items, rather than every product on sale
 - hidefilter [```boolean```] - hide the shop search and activity filters

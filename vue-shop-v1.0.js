@@ -14,14 +14,14 @@ let layout = `
                     </div>
                     <div class="col-lg-3 form-group">
                         <label for="shop-categories">Categories</label>
-                        <select id="shop-categories" class="form-control" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" v-model="SelectedCategory" @change="updateCategory($event)">
+                        <select id="shop-categories" class="form-control" v-model="SelectedCategory" @change="updateCategory($event)">
                             <option value="">All</option>
                             <option v-for="category in Categories" :value="category.id">{{ category.name }}</option>
                         </select>
                     </div>
                     <div class="col-lg-3 form-group">
                         <label for="shop-group">Activities</label>
-                        <select id="shop-group" class="form-control" data-placeholder="All" data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up" v-model="SelectedGroup" @change="updateGroup($event)">
+                        <select id="shop-group" class="form-control" v-model="SelectedGroup" @change="updateGroup($event)">
                             <option value="">All</option>
                             <option v-for="activity in Groups" :value="activity.id">{{ activity.name }}</option>
                         </select>
@@ -39,10 +39,9 @@ let layout = `
                 <div class="col-md-3 my-3 d-flex align-items-stretch" v-for="product in Products">
                     <div class="card">
                         <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
-                        <!-- Group images not implemented yet! img v-else-if="product.group && product.group.thumbnail_url" class="card-img-top" :src=product.group.thumbnail_url alt="" / -->
                         <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/Website/500x500_Placeholder.webp" alt="" />
                         <div class="card-body d-flex flex-column text-center">
-                            <h2 class="g-color-gray-dark-v2 h5 card-title">{{ product.name }}</h2>
+                            <h3 class="h5 card-title">{{ product.name }}</h3>
                             <p class="card-text mt-auto" v-if=product.group_name>{{ product.group_name }}</p>
                             <p class="card-text mt-auto" v-if="product.price > 0">{{ product.price | toCurrency }}</p>
                             <p class="card-text mt-auto" v-else>Free</p>
@@ -68,7 +67,7 @@ let layout = `
 
 Vue.component('shop', {
     template: layout,
-    props: ['title', 'yusushop', 'hidefilter'],
+    props: ['title', 'featuredshop', 'hidefilter'],
     data() {
         return {
             Products: [],
@@ -84,8 +83,19 @@ Vue.component('shop', {
     },
     created() {
         var self = this;
-        //get Products
-        self.getProducts();
+        //check if looking for a specific activity, search, etc...
+        let urlParams = new URLSearchParams(window.location.search);
+        if (!self.featuredshop && !self.hidefilter){
+            if (urlParams.has('activity_id')) {
+                self.SelectedGroup = urlParams.get('activity_id');
+            }
+            if (urlParams.has('search')) {
+                self.Search = urlParams.get('search');
+            }
+            if (urlParams.has('category')) {
+                self.SelectedCategory = urlParams.get('category');
+            }
+        }
         //Get Categories
         axios.get('https://pluto.sums.su/api/products/categories?sortBy=name', {
             headers: {
@@ -102,6 +112,8 @@ Vue.component('shop', {
         }).then(function(response) {
             self.Groups = response.data;
         });
+        //get Products
+        self.getProducts();
     },
     mounted() {
         //allow scrolling functionality
@@ -114,8 +126,9 @@ Vue.component('shop', {
          */
         getProducts: function(append = false) {
             var self = this;
+            if (!append) { self.Page = 1; }
             let parameters = 'sortBy=name&perPage=12&hasStock=1&page=' + self.Page;
-            if (self.yusushop) {
+            if (self.featuredshop) {
                 parameters += '&shopItems=1';
             }
             //add relevant parameters to the event search
