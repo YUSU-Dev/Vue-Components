@@ -88,7 +88,7 @@ let layout = `
 
 Vue.component('VActivitiesAZ', {
     template: layout,
-    props: ['selectedparents', 'title', 'selectedcategory'],
+    props: ['siteid', 'selectedparents', 'title', 'selectedcategory'],
     data() {
         return {
             Categories: [],
@@ -126,7 +126,7 @@ Vue.component('VActivitiesAZ', {
           //Get parents
           axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=1', {
               headers: {
-                  'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                  'X-Site-Id': self.siteid
               }
           }).then(function (response) {
               response.data.forEach(category => {
@@ -138,7 +138,7 @@ Vue.component('VActivitiesAZ', {
           //get categories
           axios.get('https://pluto.sums.su/api/groups/categories?sortBy=name&isParent=0&parentIds=' + self.selectedparents , {
               headers: {
-                  'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                  'X-Site-Id': self.siteid
               }
           }).then(function (response) {
               self.Categories = response.data;
@@ -175,7 +175,7 @@ Vue.component('VActivitiesAZ', {
             }
             axios.get('https://pluto.sums.su/api/groups?' + parameters, {
                 headers: {
-                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                    'X-Site-Id': self.siteid
                 }
             }).then(function (response) {
                 //if we want more events (append = true), add to array
