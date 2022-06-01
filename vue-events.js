@@ -257,7 +257,7 @@ Vue.component('events', {
             }
             axios.get('https://pluto.sums.su/api/events?' + parameters, {
                 headers: {
-                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                    'X-Site-Id': self.siteid
                 }
             }).then(function(response) {
                 //if we want more events (append = true), add to array
