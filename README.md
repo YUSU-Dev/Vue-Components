@@ -31,7 +31,7 @@ The included index.html document can be used for local testing.
 
 ## Versions
 ---
-V1.x is not supported
+V1.x is not supported  
 v2.x uses the Pluto API
 
 ## Parameters
