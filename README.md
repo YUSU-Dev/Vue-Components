@@ -2,7 +2,18 @@
 
 This Repo contains the events vue component which interacts with Sums' [Pluto API](https://github.com/University-of-Lincoln-SU/External-Developer-Docs/tree/master/PlutoAPI)
 
-The ```global/.footer``` template can be passed the parameter ```vue_comp="vue-events-vX.x"``` where ```X.x``` is the current version of vue-events uploaded to the SUMS AWS bucket.  
+You will need to include the following scripts:
+
+```
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="location-where-comp-is-stored.js"></script>
+<script>
+    var app = new Vue({
+        el: '#main'
+    });
+</script>
+```
 
 You can then use following code anywhere you want to use the component.
 
@@ -18,7 +29,7 @@ Events are sorted by start Date and only currentOrFuture events are included.
 
 The included index.html document can be used for local testing.
 
-If the page has [Select2](https://select2.org/) loaded, the two select dropdowns will load as searchable select2 dropdowns
+If the page has [Select2](https://select2.org/) loaded, the two select dropdowns will load as searchable select2 dropdowns. All styling of the componant is done using [bootstrap](https://getbootstrap.com/).
 
 ## Parameters
 ---
