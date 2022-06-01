@@ -67,7 +67,7 @@ let layout = `
 
 Vue.component('shop', {
     template: layout,
-    props: ['title', 'featuredshop', 'hidefilter'],
+    props: ['siteid', 'title', 'featuredshop', 'hidefilter'],
     data() {
         return {
             Products: [],
@@ -99,7 +99,7 @@ Vue.component('shop', {
         //Get Categories
         axios.get('https://pluto.sums.su/api/products/categories?sortBy=name', {
             headers: {
-                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                'X-Site-Id': self.siteid,
             }
         }).then(function(response) {
             self.Categories = response.data;
@@ -107,7 +107,7 @@ Vue.component('shop', {
         //get groups
         axios.get('https://pluto.sums.su/api/groups?sortBy=name&selectList=1', {
             headers: {
-                'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                'X-Site-Id': self.siteid
             }
         }).then(function(response) {
             self.Groups = response.data;
@@ -143,7 +143,7 @@ Vue.component('shop', {
             }
             axios.get('https://pluto.sums.su/api/products?' + parameters, {
                 headers: {
-                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                    'X-Site-Id': self.siteid
                 }
             }).then(function(response) {
                 //if we want more events (append = true), add to array
