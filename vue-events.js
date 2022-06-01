@@ -149,7 +149,7 @@ let layout = `
      */
 Vue.component('events', {
     template: layout,
-    props: ['groupid', 'typeid', 'venueid', 'smallcard', 'limit', 'premium'],
+    props: ['siteid', 'groupid', 'typeid', 'venueid', 'smallcard', 'limit', 'premium'],
     data() {
         return {
             Categories: [],
@@ -198,7 +198,7 @@ Vue.component('events', {
             //Get Categories
             axios.get('https://pluto.sums.su/api/events/types?sortBy=name', {
                 headers: {
-                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                    'X-Site-Id': self.siteid
                 }
             }).then(function(response) {
                 self.Categories = response.data;
@@ -206,7 +206,7 @@ Vue.component('events', {
             //get Activities
             axios.get('https://pluto.sums.su/api/groups?sortBy=name&selectList=1', {
                 headers: {
-                    'X-Site-Id': 'tZyLG9BX9f4hdTp2HLva5c'
+                    'X-Site-Id': self.siteid
                 }
             }).then(function(response) {
                 self.Groups = response.data;

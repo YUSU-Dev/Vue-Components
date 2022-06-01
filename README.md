@@ -19,7 +19,7 @@ You can then use following code anywhere you want to use the component.
 
 ```
 <div id="main">
-    <events></events>
+    <events siteid="SUMS X-Site-Id"></events>
 </div>
 ```
 
