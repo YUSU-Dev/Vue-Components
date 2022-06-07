@@ -188,6 +188,8 @@ Vue.component('events', {
             let urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('activity_id')) {
                 self.SelectedGroup = urlParams.get('activity_id');
+            } else if (urlParams.has('activity')) { //some pages use either attribute, so catching both
+                self.SelectedGroup = urlParams.get('activity');
             }
             if (urlParams.has('search')) {
                 self.Search = urlParams.get('search');
