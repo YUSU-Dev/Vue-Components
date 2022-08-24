@@ -270,7 +270,7 @@ Vue.component('events', {
                     self.Events = response.data.data;
                 }
                 //If the API says there are more results (ie another page), update the template accordingly
-                if (response.data.next_page_url) {
+                if (response.data.next_page_url != null) {
                     self.MoreResults = true
                 } else {
                     self.MoreResults = false
@@ -285,7 +285,7 @@ Vue.component('events', {
                 let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 10 >= document.documentElement.offsetHeight
 
                 //automatically get more results if at bottom of page
-                if (bottomOfWindow) {
+                if (bottomOfWindow && self.MoreResults) {
                     this.moreEvents();
                 }
             }
