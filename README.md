@@ -1,4 +1,4 @@
-# Vue - Activities A-Z Component
+# Vue - Activities Components
 
 This Repo contains the activities vue component which interacts with Sums' [Pluto API](https://github.com/University-of-Lincoln-SU/External-Developer-Docs/tree/master/PlutoAPI)
 
@@ -15,6 +15,7 @@ You will need to include the following scripts:
 </script>
 ```
 
+## Vue A-Z Component
 You can then use following code anywhere you want to use the component.
 
 ```
@@ -26,6 +27,17 @@ You can then use following code anywhere you want to use the component.
 The component will load 25 activities at a time. More activites can be fetched by clicking the included "load More" button.
 
 Activities are sorted by name.
+
+## Vue Random Activity Component
+You can then use following code anywhere you want to use the component.
+
+```
+<div id="main">
+    <v-random-activity siteid="" />
+</div>
+```
+
+The component will create a button that will link to a random componant each time the page is refreshed.
 
 The included index.html document can be used for local testing.
 
