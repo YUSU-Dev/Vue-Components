@@ -9,7 +9,7 @@ let layout = `
                     <div class="col-lg-6 form-group">
                         <label for="shop-search">Search</label>
                         <div class="input-group mb-3">
-                            <input id="shop-search" class="form-control" aria-label="Search" type="text" name="search" placeholder="Search..." :value=Search v-on:keyup="search($event)" />
+                            <input id="shop-search" class="form-control" aria-label="Search" type="text" name="search" placeholder="Search..." v-on:keyup="search($event)" />
                         </div>
                     </div>
                     <div class="col-lg-3 form-group">
@@ -37,10 +37,10 @@ let layout = `
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-3 my-3 d-flex align-items-stretch" v-for="product in Products">
-                    <div class="card">
+                    <a class="card" :href="'/shop/product/' + product.id + '-' + product.url_name">
                         <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
                         <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/Website/500x500_Placeholder.webp" alt="" />
-                        <div class="card-body d-flex flex-column text-center">
+                        <div class="card-body d-flex flex-column text-center text-dark">
                             <h3 class="h5 card-title">{{ product.name }}</h3>
                             <p class="card-text mt-auto" v-if=product.group_name>{{ product.group_name }}</p>
                             <p class="card-text mt-auto" v-if="product.price > 0">{{ product.price | toCurrency }}</p>
@@ -54,7 +54,7 @@ let layout = `
                                 :href="'javascript:addToBasket(' + product.id + ')'">Add to Basket</a>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="row d-flex justify-content-center m-3" v-if="MoreResults">
