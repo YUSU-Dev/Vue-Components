@@ -38,3 +38,4 @@ The ```<shop>``` component can be passed the following arguments to change what 
 - ```title``` [```string```]: Title for the shop element, eg "YUSU Shop"
 - ```featuredshop``` [```boolean```]: Show just Union Shop items, rather than every product on sale
 - ```hidefilter``` [```boolean```]: hide the shop search and activity filters
+- ```selectedgroup``` [```string```]: show the products for a selected group

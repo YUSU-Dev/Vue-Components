@@ -36,8 +36,8 @@ let layout = `
                 <h3> No products found</h3>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-3 my-3 d-flex align-items-stretch" v-for="product in Products">
-                    <a class="card" :href="'/shop/product/' + product.id + '-' + product.url_name">
+                <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-4': Products.length<4}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
+                    <a class="card w-100" :href="'/shop/product/' + product.id + '-' + product.url_name">
                         <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
                         <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/Website/500x500_Placeholder.webp" alt="" />
                         <div class="card-body d-flex flex-column text-center text-dark">
@@ -67,7 +67,7 @@ let layout = `
 
 Vue.component('shop', {
     template: layout,
-    props: ['siteid', 'title', 'featuredshop', 'hidefilter'],
+    props: ['siteid', 'title', 'featuredshop', 'hidefilter', 'selectedgroup'],
     data() {
         return {
             Products: [],
@@ -96,6 +96,9 @@ Vue.component('shop', {
                 self.SelectedCategory = urlParams.get('category');
             }
         }
+        if (self.selectedgroup) {
+            self.SelectedGroup = self.selectedgroup;
+          }
         //Get Categories
         axios.get('https://pluto.sums.su/api/products/categories?sortBy=name', {
             headers: {
