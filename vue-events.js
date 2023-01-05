@@ -1,6 +1,9 @@
 let layout = `
 <div class="w-100">
     <div v-if="ShortView">
+    <div class="row d-flex justify-content-center m-4" v-if="!Events.length">
+                            <p class="h3">No Events Available</p>
+                        </div>
         <div class="text-center scrolling-wrapper flex-nowrap flex-lg-wrap justify-content-lg-center position-relative py-3">
             <div class="scroll-item m-2" v-for="event in Events">
                 <a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
