@@ -1,6 +1,6 @@
-let layout = `
+let layoutShop = `
 <div class="w-100">
-    <div class="pt-3 sidebar-coloured" >
+    <div v-bind:class="{'sidebar-coloured': self.featuredshop}" class="pt-3" >
         <div class="container">
             <h2 v-if="title" class="text-center pb-2">{{ title }}</h2>
             <div v-if="!hidefilter">
@@ -33,10 +33,10 @@ let layout = `
     <div class="pt-4 text-center">
         <div class="container">
             <div class="m-4 text-center" v-if="!Products.length">
-                <h3> No products found</h3>
+                <p class="h3"> No products found</p>
             </div>
             <div class="row justify-content-center">
-                <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-4': Products.length<4}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
+                <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-6': Products.length<3, 'col-md-4': Products.length===3}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
                     <a class="card w-100" :href="'/shop/product/' + product.id + '-' + product.url_name">
                         <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
                         <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/Website/500x500_Placeholder.webp" alt="" />
@@ -66,7 +66,7 @@ let layout = `
 `
 
 Vue.component('shop', {
-    template: layout,
+    template: layoutShop,
     props: ['siteid', 'title', 'featuredshop', 'hidefilter', 'selectedgroup'],
     data() {
         return {
