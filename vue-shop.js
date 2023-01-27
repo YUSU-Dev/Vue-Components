@@ -36,7 +36,7 @@ let layoutShop = `
                 <p class="h3"> No products found</p>
             </div>
             <div class="row justify-content-center">
-                <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-6': Products.length<3, 'col-md-4': Products.length===3}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
+                <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-4': Products.length<3}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
                     <a class="card w-100" :href="'/shop/product/' + product.id + '-' + product.url_name">
                         <img v-if=product.image class="card-img-top"  :src=product.image alt="" />
                         <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/Website/500x500_Placeholder.webp" alt="" />
