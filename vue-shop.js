@@ -1,6 +1,6 @@
-let layout = `
+let layoutShop = `
 <div class="w-100">
-    <div class="pt-3 sidebar-coloured" >
+    <div v-bind:class="{'sidebar-coloured': self.featuredshop}" class="pt-3" >
         <div class="container">
             <h2 v-if="title" class="text-center pb-2">{{ title }}</h2>
             <div v-if="!hidefilter">
@@ -66,7 +66,7 @@ let layout = `
 `
 
 Vue.component('shop', {
-    template: layout,
+    template: layoutShop,
     props: ['siteid', 'title', 'featuredshop', 'hidefilter', 'selectedgroup'],
     data() {
         return {
