@@ -33,7 +33,7 @@ let layoutShop = `
     <div class="pt-4 text-center">
         <div class="container">
             <div class="m-4 text-center" v-if="!Products.length">
-                <p class="h3"> No products found</p>
+                <h3> No products found</h3>
             </div>
             <div class="row justify-content-center">
                 <div v-bind:class="{'col-md-3': Products.length>3,  'col-md-4': Products.length<3}" class="col-9 my-3 d-flex align-items-stretch" v-for="product in Products">
