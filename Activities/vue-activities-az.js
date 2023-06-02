@@ -47,7 +47,7 @@ let layoutActivities = `
           <!-- Activity -->
           <div class="col-5 col-md-2 mx-2 my-2 activity-article d-block" v-for="Activity in Groups">
             <div>
-              <a :href="'/activities/view/' + Activity.url_name">
+              <a :href="(pageurl ?? '/activities/view/') + Activity.url_name">
                 <div>
                   <img v-if=Activity.thumbnail_url class="card-img-top" :src=Activity.thumbnail_url alt="" class="d-md-block justify-content-center" style="height: 9em;overflow:hidden; background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer; object-fit: contain;" />
                   <img v-else class="card-img-top" src="https://assets-cdn.sums.su/YU/IMG/YUSU_logo_single.png" alt="" class="d-none d-md-block justify-content-center" style="height: 9em;overflow:hidden; background-position: center; background-repeat: no-repeat; background-size: contain; cursor:pointer;" />
@@ -69,7 +69,7 @@ let layoutActivities = `
 `;
 Vue.component("VActivitiesAZ", {
   template: layoutActivities,
-  props: ["siteid", "selectedparents", "title", "selectedcategory"],
+  props: ["siteid", "selectedparents", "title", "selectedcategory", "pageurl"],
   data() {
     return {
       Categories: [],

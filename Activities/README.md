@@ -1,6 +1,6 @@
 # Vue - Activities Components
 
-This Repo contains the activities vue component which interacts with Sums' [Pluto API](https://github.com/University-of-Lincoln-SU/External-Developer-Docs/tree/master/PlutoAPI)
+This folder contains the activities vue component which interacts with Sums' [Pluto API](https://github.com/University-of-Lincoln-SU/External-Developer-Docs/tree/master/PlutoAPI)
 
 You will need to include the following scripts:
 
@@ -15,6 +15,7 @@ You will need to include the following scripts:
 </script>
 ```
 
+---
 ## Vue A-Z Component
 You can then use following code anywhere you want to use the component.
 
@@ -28,26 +29,9 @@ The component will load 25 activities at a time. More activites can be fetched b
 
 Activities are sorted by name.
 
-## Vue Random Activity Component
-You can then use following code anywhere you want to use the component.
-
-```
-<div id="main">
-    <v-random-activity siteid="" />
-</div>
-```
-
-The component will create a button that will link to a random componant each time the page is refreshed.
-
 The included index.html document can be used for local testing.
 
-## Versions
----
-V1.x is not supported  
-v2.x uses the Pluto API
-
-## Parameters
----
+### Parameters
 ```siteid``` (required): SUMS X-Site-Id
 
 ```selectedparents```: comma separated string of parent categories to display.  
@@ -57,6 +41,20 @@ eg. ```<v-activities-a-z selectedparents="2,24"></v-activities-a-z>``` returns S
 
 ```title```: Set title of the component
 
-### URL Parameters
+```pageurl```: The page to go to when an activity is clicked. Defaults to "/activities/view/"
+
+#### URL Parameters
 
 Passing ```?search=``` will activate the component search functionality.
+
+---
+## Vue Random Activity Component
+You can then use following code anywhere you want to use the component.
+
+```
+<div id="main">
+    <v-random-activity siteid="" />
+</div>
+```
+
+The component will create a button that links to a random activity each time the page is refreshed.
