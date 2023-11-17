@@ -1,149 +1,169 @@
 let layout = `
 <div class="w-100">
-    <div v-if="ShortView">
-    <div class="row d-flex justify-content-center m-4" v-if="!Events.length">
-                            <p class="h3">No Events Available</p>
-                        </div>
-        <div class="text-center scrolling-wrapper flex-nowrap flex-lg-wrap justify-content-lg-center position-relative py-3">
-            <div class="scroll-item m-2" v-for="event in Events">
-                <a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
-                    <div class="card h-100">
-                        <div class="card-header h5 text-center" style="color:black !important;"><em>
-                                <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
-                        </div>
-                        <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
-                        <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
-                            :src=event.group.thumbnail_url alt="" />
-                        <img v-else class="card-img-top"
-                            src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg" alt="" />
-                        <div class="card-body text-center">
-                            <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
-                            <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
-                                        v-if=event.venue> | {{ event.venue.name }}</span></small></p>
-                            <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
-                        </div>
-                        <div class="card-footer p-0 bg-white">
-                            <div class="text-center" v-if=event.external_tickets>
-                                <a class="btn btn-xl btn-secondary rounded text-uppercase p-3 m-2 text-wrap"
-                                    :href=event.external_tickets>
-                                    Tickets
-                                </a>
-                            </div>
-                            <div class="text-center" v-else>
-                                <p class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
-                                    More Information
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div v-else>
-        <section class="pt-3">
-            <div class="contacts-wrapper">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <form class="form">
-                                <h2 class="h6">Filter Events</h2>
-                                <div class="row">
-                                    <div class="col-lg-3 pt-3">
-                                        <label for="event-category">Category</label>
-                                        <select id="event-category" class="form-control" data-placeholder="All"
-                                            data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up"
-                                            @change="updateCategory($event)">
-                                            <option value="">All</option>
-                                            <option v-for="category in Categories" :value="category.id">{{ category.name }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3 pt-3">
-                                        <label for="event-activity">Activity</label>
-                                        <select id="event-activity" class="form-control" data-placeholder="All"
-                                            data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up"
-                                            @change="updateGroup($event)">
-                                            <option value="">All</option>
-                                            <option v-for="activity in Groups" :value="activity.id">{{ activity.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-4 pt-3">
-                                        <label for="event-search">Search</label>
-                                        <div class="input-group mb-3">
-                                            <input id="event-search" class="form-control" aria-label="Search"
-                                                type="text" name="search" placeholder="Search..." :value=Search />
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-block btn-secondary"
-                                                    aria-label="Submit"><i class="fas fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 pt-3">
-                                        <label>Reset Form</label>
-                                        <button class="btn btn-block btn-secondary" type="button"
-                                            @submit.prevent @click="reset()">Reset</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Actual Events -->
-        <section class="section pt-4" @scroll="onScroll">
-            <div class="container">
-                <div class="row">
-                    <div class="col g-mb-30">
-                        <div class="row d-flex justify-content-center m-4" v-if="!Events.length">
-                            <p class="h3">No Events Available</p>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-3 my-3" v-for="event in Events">
-                                <a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
-                                    <div class="card h-100">
-                                        <div class="card-header h5 text-center" style="color:black !important;"><em>
-                                                <time :datetime="event.start_date">{{ event.start_date | getDate }}</time></em>
-                                        </div>
-                                        <img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url alt="" />
-                                        <img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
-                                            :src=event.group.thumbnail_url :alt="event.group.name + ' Logo'" />
-                                        <img v-else class="card-img-top"
-                                            src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
-                                            alt="" />
-                                        <div class="card-body text-center">
-                                            <h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
-                                            <p class="card-text"><small>Start times from {{ event.start_date | getTime }}<span
-                                                        v-if=event.venue> | {{ event.venue.name }}</span></small></p>
-                                            <p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
-                                        </div>
-                                        <div class="card-footer p-0 bg-white">
-                                            <div class="text-center" v-if=event.external_tickets>
-                                                <a class="btn btn-xl btn-secondary yu-bg-primary rounded text-uppercase p-3 m-2 text-wrap"
-                                                    :href=event.external_tickets>
-                                                    Tickets</a>
-                                            </div>
-                                            <div class="text-center" v-else>
-                                                <p class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
-                                                    More Information
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex justify-content-center m-3" v-if="MoreResults && !limit">
-                    <button type="button"
-                        class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
-                        @click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
-                </div>
-            </div>
-        </section>
-    </div>
+	<div v-if="ShortView">
+		<div class="container">
+			<div class="row">
+				<div class="col g-mb-30">
+					<div class="row d-flex justify-content-center m-4" v-if="!Events.length">
+						<p class="h3">No Events Available</p>
+					</div>
+					<div class="row justify-content-center">
+						<div class="col-6 col-md-3 my-3" v-for="event in Events">
+							<a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
+								<div class="card h-100">
+									<div class="card-header h5 text-center" style="color:black !important;"><em>
+											<time :datetime="event.start_date">{{ event.start_date | getDate
+												}}</time></em>
+									</div>
+									<img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url
+										alt="" />
+									<img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
+										:src=event.group.thumbnail_url :alt="event.group.name + ' Logo'" />
+									<img v-else class="card-img-top"
+										src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
+										alt="" />
+									<div class="card-body text-center">
+										<h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
+										<p class="card-text"><small>Start times from {{ event.start_date | getTime
+												}}<span v-if=event.venue> | {{ event.venue.name }}</span></small>
+										</p>
+										<p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
+									</div>
+									<div class="card-footer p-0 bg-white">
+										<div class="text-center" v-if=event.external_tickets>
+											<a class="btn btn-xl btn-secondary yu-bg-primary rounded text-uppercase p-3 m-2 text-wrap"
+												:href=event.external_tickets>
+												Tickets</a>
+										</div>
+										<div class="text-center" v-else>
+											<p
+												class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
+												More Information
+											</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row d-flex justify-content-center m-3" v-if="MoreResults && !limit">
+				<button type="button"
+					class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+					@click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
+			</div>
+		</div>
+	</div>
+	<div v-else>
+		<section class="pt-3">
+			<div class="contacts-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="col-xl-12">
+							<form class="form">
+								<h2 class="h6">Filter Events</h2>
+								<div class="row">
+									<div class="col-lg-3 pt-3">
+										<label for="event-category">Category</label>
+										<select id="event-category" class="form-control" data-placeholder="All"
+											data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up"
+											@change="updateCategory($event)">
+											<option value="">All</option>
+											<option v-for="category in Categories" :value="category.id">{{ category.name
+												}}</option>
+										</select>
+									</div>
+									<div class="col-lg-3 pt-3">
+										<label for="event-activity">Activity</label>
+										<select id="event-activity" class="form-control" data-placeholder="All"
+											data-open-icon="fa fa-angle-down" data-close-icon="fa fa-angle-up"
+											@change="updateGroup($event)">
+											<option value="">All</option>
+											<option v-for="activity in Groups" :value="activity.id">{{ activity.name }}
+											</option>
+										</select>
+									</div>
+									<div class="col-lg-4 pt-3">
+										<label for="event-search">Search</label>
+										<div class="input-group mb-3">
+											<input id="event-search" class="form-control" aria-label="Search"
+												type="text" name="search" placeholder="Search..." :value=Search />
+											<div class="input-group-append">
+												<button type="submit" class="btn btn-block btn-secondary"
+													aria-label="Submit"><i class="fas fa-search"></i></button>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 pt-3">
+										<label>Reset Form</label>
+										<button class="btn btn-block btn-secondary" type="button" @submit.prevent
+											@click="reset()">Reset</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Actual Events -->
+		<section class="section pt-4" @scroll="onScroll">
+			<div class="container">
+				<div class="row">
+					<div class="col g-mb-30">
+						<div class="row d-flex justify-content-center m-4" v-if="!Events.length">
+							<p class="h3">No Events Available</p>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col-6 col-md-3 my-3" v-for="event in Events">
+								<a :href="'/events/id/' + event.event_id + '-' + event.url_name" class="text-dark">
+									<div class="card h-100">
+										<div class="card-header h5 text-center" style="color:black !important;"><em>
+												<time :datetime="event.start_date">{{ event.start_date | getDate
+													}}</time></em>
+										</div>
+										<img v-if=event.thumbnail_url class="card-img-top" :src=event.thumbnail_url
+											alt="" />
+										<img v-else-if="event.group && event.group.thumbnail_url" class="card-img-top"
+											:src=event.group.thumbnail_url :alt="event.group.name + ' Logo'" />
+										<img v-else class="card-img-top"
+											src="https://d350x4n02brjm.cloudfront.net/sums/website/images/500x500_Placeholder.jpg"
+											alt="" />
+										<div class="card-body text-center">
+											<h2 class="text-dark h5 card-title" v-html="event.event_date_title"></h2>
+											<p class="card-text"><small>Start times from {{ event.start_date | getTime
+													}}<span v-if=event.venue> | {{ event.venue.name }}</span></small>
+											</p>
+											<p class="card-text" v-if=!(smallcard)>{{ event.short_description }}</p>
+										</div>
+										<div class="card-footer p-0 bg-white">
+											<div class="text-center" v-if=event.external_tickets>
+												<a class="btn btn-xl btn-secondary yu-bg-primary rounded text-uppercase p-3 m-2 text-wrap"
+													:href=event.external_tickets>
+													Tickets</a>
+											</div>
+											<div class="text-center" v-else>
+												<p
+													class="btn btn-xl btn-secondary rounded p-3 m-2 text-white event-info-button text-wrap">
+													More Information
+												</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row d-flex justify-content-center m-3" v-if="MoreResults && !limit">
+					<button type="button"
+						class="btn btn-xl u-btn-secondary rounded-0 text-uppercase g-font-weight-700 g-font-size-12 g-mr-5 g-mt-10"
+						@click="moreEvents()">Load More <i class="fa fa-chevron-down"></i></button>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
 `
     /**
