@@ -19,3 +19,4 @@ You will need to include the following scripts:
 - [Activities](/Activities/)
 - [Events](/Events/)
 - [Shop](/Shop/)
+- [News](/News/)

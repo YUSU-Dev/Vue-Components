@@ -1,0 +1,78 @@
+{embed="global/.header" title='News & Blogs'}
+{embed="global/.page-header" title='News & Blogs' image_url="https://060ecc617616c3feb7a4-94e32d036344ef9293efd028d3addb42.ssl.cf3.rackcdn.com/about-us-sc-bg-2.jpg" colour="navy"}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+    .zoom {
+        transition: transform .2s;
+    }
+    .zoom:hover {
+        transform: scale(1.03);
+    }
+    .hide {
+        display: none;
+    }
+    .tag:hover .hide {
+        display: block;
+    }
+    .custom-scroll ::-webkit-scrollbar {
+        width: .45rem !important;
+    }
+    .custom-scroll ::-webkit-scrollbar-thumb {
+        background-color: #fff !important;
+        border-color: #40454d;
+        border-radius: 3px !important;
+    }
+    .custom-scroll ::-webkit-scrollbar-track{
+        background: #40454d !important;
+    }
+    .sticky-top {
+        top: 135px;
+    }
+    @media only screen and (max-width: 767px) {
+        .right-border {
+            border-right: none !important;
+        }
+        /* .news-card:nth-child(odd) {
+            padding-right: 8px !important;
+        }
+        .news-card:nth-child(even) {
+            padding-left: 8px !important;
+        } */
+    }
+    .dynamic-img {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+    }
+    .square-img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+  	a:hover .card h3, a:active .card h3, a:focus-visible .card h3 {
+  		text-decoration: underline;
+  	}
+  	a:focus-visible .card {
+  		outline: solid 2px!important;
+  		outline-offset: 4px;
+  	}
+</style>
+
+<div class="container">
+
+  <div id="main">
+        <news siteid="tZyLG9BX9f4hdTp2HLva5c"></news>
+  </div>
+    
+</div>
+
+{embed="global/.footer" vue_comp="vue-news"}
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
