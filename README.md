@@ -1,5 +1,8 @@
 # Vue - Components
 
+This repository is now archived and nolonger supported, the latest versions of this work can be found in the [website](https://github.com/YUSU-Dev/website) repo. Thank you to everyone who helped produce components for our website.
+
+## Old README
 This Repo contains the activities vue component which interacts with Sums' [Pluto API](https://github.com/University-of-Lincoln-SU/External-Developer-Docs/tree/master/PlutoAPI)
 
 You will need to include the following scripts:
@@ -15,7 +18,7 @@ You will need to include the following scripts:
 </script>
 ```
 
-# Components
+## Components
 - [Activities](/Activities/)
 - [Events](/Events/)
 - [Shop](/Shop/)
